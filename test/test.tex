@@ -1,0 +1,62 @@
+\documentclass[dvipdfmx,autodetect-engine,titlepage]{jsarticle}
+\usepackage[dvipdfm]{graphicx}
+\usepackage{ascmac}
+\usepackage{fancybox}
+\usepackage{listings}
+\usepackage{plistings}
+\usepackage{itembkbx}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage{graphics}
+\usepackage{listings}
+
+\textheight=23cm
+\renewcommand{\figurename}{図}
+\renewcommand{\tablename}{表}
+\newenvironment{code}
+{\vspace{0.5zw}\VerbatimEnvironment  
+\begin{screen} 
+\baselineskip=1.0\normalbaselineskip
+ \begin{Verbatim}}
+{\end{Verbatim}
+\baselineskip=\normalbaselineskip
+ \end{screen}\vspace{0.5zw}} 
+
+\title{情報理工学部　SNコース 3回\\
+ワイヤレス通信システム\\
+放射電磁界の距離依存性}
+\author{26002000872\\Oku Wakana\\奥　若菜}
+\date{May 15 2022}
+
+\begin{document}
+
+\maketitle
+
+\section{電気ダイポールによる電磁界}
+教科書15ページ図2.2の電気ダイポールの各電磁界成分は、16~17ページの導出により、
+
+\begin{align*}
+  H_{\phi } &= \frac{Idl\sin \theta }{4\pi}(\frac{jk}{r}+\frac{1}{r^2})e^{-jkr} \tag*{2・18}
+\end{align*}
+
+\begin{align*}
+  E_{r} &= \frac{Idl\cos \theta }{j2\pi \omega \epsilon}(\frac{jk}{r^2}+\frac{1}{r^3})e^{-jkr} \\ \tag*{2・19}
+\end{align*}
+
+\begin{align*}
+  E_{\theta } &= \frac{Idl\sin \theta }{j4\pi \omega \epsilon}(\frac{k^2}{r}-\frac{jk}{r^2}-\frac{1}{r^3})e^{-jkr} \\ \tag*{2・20}
+\end{align*}
+
+\begin{align*}
+  H_{r} &= H_{\theta} &= E_{\phi } &= 0 \\ \tag*{2・21}
+\end{align*}
+
+となり、磁界は \begin{math}\phi \end{math}成分だけを、電界は \begin{math} r,\theta \end{math}の２成分だけを持つこと,\\
+電磁界成分は\begin{math}\frac{1}{r^3},\frac{1}{r^2},\frac{1}{r}\end{math}のいずれか、または全ての項から構成されることが分かる.\\
+距離依存性について考えると、十分遠方では\begin{math}\frac{1}{r^3},\frac{1}{r^2}\end{math}の項による影響は受けないため、
+
+\begin{align*}
+  &= \frac{Idl \mu_0 \sin \theta }{j2\lambda r \sqrt{\epsilon _{0}\mu _0 }}e^{-jkr}\\
+\end{align*}
+
+\end{document}

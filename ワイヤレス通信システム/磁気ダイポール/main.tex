@@ -1,0 +1,77 @@
+\documentclass[dvipdfmx,autodetect-engine,titlepage]{jsarticle}
+\usepackage[dvipdfm]{graphicx}
+\usepackage{ascmac}
+\usepackage{fancybox}
+\usepackage{listings}
+\usepackage{plistings}
+\usepackage{itembkbx}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage{graphics}
+\usepackage{listings}
+\usepackage{here}
+
+\lstset{%
+  language={C},
+  basicstyle={\small},%
+  identifierstyle={\small},%
+  commentstyle={\small\itshape\color[rgb]{0,0.5,0}},%
+  keywordstyle={\small\bfseries\color[rgb]{0,0,1}},%
+  ndkeywordstyle={\small},%
+  stringstyle={\small\ttfamily\color[rgb]{1,0,1}},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},%
+  numbers=left,%
+  xrightmargin=0zw,%
+  xleftmargin=3zw,%
+  numberstyle={\scriptsize},%
+  stepnumber=1,
+  numbersep=1zw,%
+  lineskip=-0.5ex%
+}
+
+\textheight=23cm
+\renewcommand{\figurename}{図}
+\renewcommand{\tablename}{表}
+\newenvironment{code}
+{\vspace{0.5zw}\VerbatimEnvironment  \begin{screen} 
+\baselineskip=1.0\normalbaselineskip
+ \begin{Verbatim}}
+{\end{Verbatim}
+\baselineskip=\normalbaselineskip
+ \end{screen}\vspace{0.5zw}} 
+
+\title{ワイヤレス通信システム(B1)\\
+4th Week 磁気ダイポール\\
+}
+\author{2600200087-2\\Oku Wakana\\奥 若菜}
+\date{May. 29 2022}
+
+\begin{document}
+
+\maketitle
+
+\section{磁気ダイポールによる電界}
+教科書の図2.3のような磁気ダイポールによる電界を表す式(2・24)を導出する。\\
+はじめに、微小ループ電流による磁界は、ループ面に垂直な微小磁気ダイポールと等価なので、図2.2のような電気ダイポールの電磁界から求める。\\
+
+ファラデーの法則、アンペア・マクスウェルの法則はそれぞれ、
+\begin{eqnarray}
+  \nabla \times E &=& - \frac{\partial B}{\partial t}\\
+  \nabla \times H &=& J + \frac{\partial D}{\partial t}
+\end{eqnarray}
+また、ベクトルポテンシャルAは、自由空間において
+\begin{eqnarray}
+  B &=& \nabla \times A 
+\end{eqnarray}
+式(1)に式(3) を代入すると
+\begin{eqnarray}
+  \nabla \times E = -\frac{\partial}{\partial t}(\nabla \times A)\nonumber\\
+  \nabla \times (E+\frac{\partial A}{\partial t})= 0\nonumber
+\end{eqnarray}
+
+
+
+
+\end{document}

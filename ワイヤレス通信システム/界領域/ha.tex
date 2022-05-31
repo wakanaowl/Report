@@ -1,0 +1,90 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+
+\title{ワイヤレス通信システム第4回レポート}
+\author{26002002549 塚本覇虎}
+\date{2022/5/29}
+
+\begin{document}
+
+\maketitle
+自由空間において、
+\begin{eqnarray*}
+B &=& \nabla \times A
+\end{eqnarray*}
+は、ファラデーの法則から、
+\begin{eqnarray*}
+\nabla \times E &=& -\frac{\partial}{\partial t}(\nabla \times A)\\
+ \nabla \times (E+\frac{\partial A}{\partial t})&=& 0
+\end{eqnarray*}
+$\nabla \times \nabla \phi = 0$より
+\begin{eqnarray*}
+E+\frac{\partial A}{\partial t}&=&\nabla \phi\\
+E &=& \nabla \phi-j \omega A
+\end{eqnarray*}
+アンペア・マクスウェルの法則とベクトル恒等式から
+\begin{eqnarray*}
+\nabla \times H &=& J + \frac{\partial D}{\partial t}\\
+\nabla \times \frac{B}{\mu} &=& J + j \omega \epsilon\\
+\frac{1}{\mu}(\nabla\nabla\cdot A - \nabla^2 A)&=&J + j \omega \epsilon
+\end{eqnarray*}
+より、
+\begin{eqnarray*}
+\frac{1}{\mu}(\nabla\nabla\cdot A - \nabla^2 A)&=&J + j \omega \epsilon(\nabla\phi - j\omega A)\\
+\nabla^2 A-\nabla(\nabla\cdot A -j \omega \epsilon \mu \phi ) + \omega^2 \epsilon \mu A &=& -\mu J
+\end{eqnarray*}
+$k^2 = \omega^2 \epsilon \mu$とすると、
+\begin{eqnarray*}
+(\nabla^2 + k^2)A_z &=& -\mu J_z
+\end{eqnarray*}
+これをラプシアンの球座標表現を用い展開すると、原点以外でのベクトルポテンシャルは
+\begin{eqnarray*}
+\frac{1}{r^2}\frac{\partial}{\partial r}r^2\frac{\partial}{A_z}+k^2 A_z &=& 0
+\end{eqnarray*}
+を満足する。この波動方程式を満足する球波面の基本解のうち、外向波のベクトルポテンシャルは、$C_1$を比例定数として、
+\begin{eqnarray*}
+A_z&=&C_1\frac{e^{-jkr}}{r}
+\end{eqnarray*}
+と表現できる。
+\begin{eqnarray*}(\nabla^2 + k^2)A_z &=& -\mu J_z\end{eqnarray*}の両辺を$_0$の微小体積で積分し、ガウスの定理を適用すると、
+\begin{eqnarray*}
+\int_V \nabla^2 A_z dV + k^2 \int_V A_z dV &=& -\mu \int_V J_z dV\\
+\int_V\nabla\cdot\nabla A_z dV &=& -k^2 \int_V A_z dV - \mu \int_V J_z dV\\
+\oint_S \nabla A_z dS &=& -k^2 \int_V A_z dV - \mu \int_V J_z dV\\
+\int_0^{2\pi} \int_0^\pi \nabla A_z \cdot \hat{r} {r_0}^2\sin{\theta}d\theta d\phi &=& -k^2 \int_V A_z dV - \mu \int_V J_z dV
+\end{eqnarray*}
+電流密度の体積積分は$Idl$に収束するため、
+\begin{eqnarray*}
+4\pi C_1 &=& \mu Idl\\
+C_1 &=& \frac{\mu Idl}{4\pi}
+\end{eqnarray*}
+よって、
+\begin{eqnarray*}
+A_z &=& \mu Idl \frac{e^{-jkr}}{4\pi r}
+\end{eqnarray*}
+である。この式を
+\begin{eqnarray*}
+H &=& \frac{1}{\mu}\nabla \times A\\
+E &=& -j\omega A + \frac{1}{j\omega \mu \epsilon}\nabla\nabla\cdot A
+\end{eqnarray*}
+に適用する。
+まず、$z$成分方向だけをもつベクトルポテンシャルを球座標系で表すと、
+\begin{eqnarray*}
+A&=& \mu Idl \frac{e^{-jkr}}{4\pi r }(\hat{r}\cos\theta - \hat{\theta}\sin\theta)
+\end{eqnarray*}
+これより、
+\begin{eqnarray*}
+H &=& \frac{1}{\mu}\nabla\times [\mu Idl \frac{e^{-jkr}}{4\pi r }(\hat{r}\cos\theta - \hat{\theta}\sin\theta)]\\
+&=&\frac{Idl \sin\theta}{4\pi}(\frac{jk}{r}+ \frac{1}{r^2})e^{-jkr}
+\end{eqnarray*}
+であるから、
+\begin{eqnarray*}
+H_{\phi}&=& \frac{Idl \sin\theta}{4\pi}(\frac{jk}{r}+ \frac{1}{r^2})e^{-jkr}
+\end{eqnarray*}
+電磁界の双対性から、
+\begin{eqnarray*}
+E_{\phi}&=& -\frac{j\omega \mu I \pi a^2 \sin\theta}{4\pi}(\frac{jk}{r} + \frac{1}{r^2})e^{-jkr}
+\end{eqnarray*}
+以上によって導出できた。
+\end{document}

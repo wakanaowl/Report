@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.141592653-p4.0.0-220214-2.6 (utf8.euc) (TeX Live 2022) (preloaded format=platex 2022.5.16)  31 MAY 2022 11:18
+This is e-pTeX, Version 3.141592653-p4.0.0-220214-2.6 (utf8.euc) (TeX Live 2022) (preloaded format=platex 2022.5.16)  1 JUN 2022 13:18
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -295,8 +295,8 @@ LaTeX Font Info:    Font shape `JY1/mc/m/n' will be
 (Font)              scaled to size 6.72699pt on input line 64.
 LaTeX Font Info:    Font shape `JY1/mc/m/n' will be
 (Font)              scaled to size 4.805pt on input line 64.
-File: fg1.png Graphic file (type bmp)
-<fg1.png>
+File: fg1.jpg Graphic file (type bmp)
+<fg1.jpg>
 LaTeX Font Info:    Font shape `JT1/mc/m/n' will be
 (Font)              scaled to size 8.64899pt on input line 74.
 LaTeX Font Info:    Font shape `JY1/mc/m/n' will be
@@ -305,16 +305,70 @@ LaTeX Font Info:    Font shape `JT1/gt/m/n' will be
 (Font)              scaled to size 9.60999pt on input line 79.
 LaTeX Font Info:    Font shape `JY1/gt/m/n' will be
 (Font)              scaled to size 9.60999pt on input line 79.
-File: fg2.png Graphic file (type bmp)
-<fg2.png>
-[1] [2] (out/main.aux) ) 
+File: fg5.jpg Graphic file (type bmp)
+<fg5.jpg>
+[1]
+File: fg6.jpg Graphic file (type bmp)
+<fg6.jpg>
+File: fg7.jpg Graphic file (type bmp)
+<fg7.jpg>
+File: fg8.jpg Graphic file (type bmp)
+<fg8.jpg>
+[2]
+File: fg9.jpg Graphic file (type bmp)
+<fg9.jpg>
+File: fg10.jpg Graphic file (type bmp)
+<fg10.jpg>
+[3] [4] [5]
+File: i1.png Graphic file (type bmp)
+<i1.png>
+File: i2.png Graphic file (type bmp)
+<i2.png>
+[6]
+File: i3.png Graphic file (type bmp)
+<i3.png>
+File: yagi1.png Graphic file (type bmp)
+<yagi1.png>
+[7]
+File: yagi2.jpg Graphic file (type bmp)
+<yagi2.jpg>
+File: yagi3.png Graphic file (type bmp)
+<yagi3.png>
+[8]
+File: o1.png Graphic file (type bmp)
+<o1.png>
+File: o2.png Graphic file (type bmp)
+<o2.png>
+[9]
+File: o3.png Graphic file (type bmp)
+<o3.png>
+[10]
+File: yagiuda.png Graphic file (type bmp)
+<yagiuda.png>
+File: yagiuda1.png Graphic file (type bmp)
+<yagiuda1.png>
+[11]
+File: s1.jpg Graphic file (type bmp)
+<s1.jpg>
+File: s2.jpg Graphic file (type bmp)
+<s2.jpg>
+File: fg11.jpg Graphic file (type bmp)
+<fg11.jpg>
+File: fg12.png Graphic file (type bmp)
+<fg12.png>
+[12]
+File: fg13.png Graphic file (type bmp)
+<fg13.png>
+File: fg14.png Graphic file (type bmp)
+<fg14.png>
+[13] [14] [15] [16] (out/main.aux) ) 
 Here is how much of TeX's memory you used:
- 5169 strings out of 479993
- 74154 string characters out of 5884089
- 580343 words of memory out of 5000000
- 23431 multiletter control sequences out of 15000+600000
+ 5320 strings out of 479993
+ 76388 string characters out of 5884089
+ 587343 words of memory out of 5000000
+ 23537 multiletter control sequences out of 15000+600000
  481710 words of font info for 87 fonts, out of 8000000 for 9000
  112 hyphenation exceptions out of 8191
- 55i,6n,62p,814b,332s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 55i,8n,62p,814b,416s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on out/main.dvi (3 pages, 3268 bytes).
+Output written on out/main.dvi (17 pages, 41188 bytes).

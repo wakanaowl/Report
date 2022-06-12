@@ -395,18 +395,106 @@ INPUT /usr/local/texlive/2022basic/texmf-dist/fonts/tfm/public/amsfonts/cmextra/
 INPUT /usr/local/texlive/2022basic/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm
 INPUT /usr/local/texlive/2022basic/texmf-dist/fonts/tfm/ptex-fonts/jis/jis.tfm
 INPUT /usr/local/texlive/2022basic/texmf-dist/fonts/tfm/ptex-fonts/jis/jis.tfm
-INPUT ./fg1.png
-INPUT ./fg1.png
-INPUT fg1.png
-INPUT extractbb -B cropbox -O fg1.png
+INPUT ./fg1.jpg
+INPUT ./fg1.jpg
+INPUT fg1.jpg
+INPUT extractbb -B cropbox -O fg1.jpg
 INPUT /usr/local/texlive/2022basic/texmf-dist/fonts/tfm/ptex-fonts/standard/tmin10.tfm
 INPUT /usr/local/texlive/2022basic/texmf-dist/fonts/tfm/ptex-fonts/jis/jis.tfm
 INPUT /usr/local/texlive/2022basic/texmf-dist/fonts/tfm/public/cm/cmr9.tfm
 INPUT /usr/local/texlive/2022basic/texmf-dist/fonts/tfm/ptex-fonts/standard/tgoth10.tfm
 INPUT /usr/local/texlive/2022basic/texmf-dist/fonts/tfm/ptex-fonts/jis/jisg.tfm
 INPUT /usr/local/texlive/2022basic/texmf-dist/fonts/tfm/public/cm/cmss10.tfm
-INPUT ./fg2.png
-INPUT ./fg2.png
-INPUT fg2.png
-INPUT extractbb -B cropbox -O fg2.png
+INPUT ./fg5.jpg
+INPUT ./fg5.jpg
+INPUT fg5.jpg
+INPUT extractbb -B cropbox -O fg5.jpg
+INPUT ./fg6.jpg
+INPUT ./fg6.jpg
+INPUT fg6.jpg
+INPUT extractbb -B cropbox -O fg6.jpg
+INPUT ./fg7.jpg
+INPUT ./fg7.jpg
+INPUT fg7.jpg
+INPUT extractbb -B cropbox -O fg7.jpg
+INPUT ./fg8.jpg
+INPUT ./fg8.jpg
+INPUT fg8.jpg
+INPUT extractbb -B cropbox -O fg8.jpg
+INPUT ./fg9.jpg
+INPUT ./fg9.jpg
+INPUT fg9.jpg
+INPUT extractbb -B cropbox -O fg9.jpg
+INPUT ./fg10.jpg
+INPUT ./fg10.jpg
+INPUT fg10.jpg
+INPUT extractbb -B cropbox -O fg10.jpg
+INPUT ./i1.png
+INPUT ./i1.png
+INPUT i1.png
+INPUT extractbb -B cropbox -O i1.png
+INPUT ./i2.png
+INPUT ./i2.png
+INPUT i2.png
+INPUT extractbb -B cropbox -O i2.png
+INPUT ./i3.png
+INPUT ./i3.png
+INPUT i3.png
+INPUT extractbb -B cropbox -O i3.png
+INPUT ./yagi1.png
+INPUT ./yagi1.png
+INPUT yagi1.png
+INPUT extractbb -B cropbox -O yagi1.png
+INPUT ./yagi2.jpg
+INPUT ./yagi2.jpg
+INPUT yagi2.jpg
+INPUT extractbb -B cropbox -O yagi2.jpg
+INPUT ./yagi3.png
+INPUT ./yagi3.png
+INPUT yagi3.png
+INPUT extractbb -B cropbox -O yagi3.png
+INPUT ./o1.png
+INPUT ./o1.png
+INPUT o1.png
+INPUT extractbb -B cropbox -O o1.png
+INPUT ./o2.png
+INPUT ./o2.png
+INPUT o2.png
+INPUT extractbb -B cropbox -O o2.png
+INPUT ./o3.png
+INPUT ./o3.png
+INPUT o3.png
+INPUT extractbb -B cropbox -O o3.png
+INPUT ./yagiuda.png
+INPUT ./yagiuda.png
+INPUT yagiuda.png
+INPUT extractbb -B cropbox -O yagiuda.png
+INPUT ./yagiuda1.png
+INPUT ./yagiuda1.png
+INPUT yagiuda1.png
+INPUT extractbb -B cropbox -O yagiuda1.png
+INPUT ./s1.jpg
+INPUT ./s1.jpg
+INPUT s1.jpg
+INPUT extractbb -B cropbox -O s1.jpg
+INPUT ./s2.jpg
+INPUT ./s2.jpg
+INPUT s2.jpg
+INPUT extractbb -B cropbox -O s2.jpg
+INPUT ./fg11.jpg
+INPUT ./fg11.jpg
+INPUT fg11.jpg
+INPUT extractbb -B cropbox -O fg11.jpg
+INPUT ./fg12.png
+INPUT ./fg12.png
+INPUT fg12.png
+INPUT extractbb -B cropbox -O fg12.png
+INPUT ./fg13.png
+INPUT ./fg13.png
+INPUT fg13.png
+INPUT extractbb -B cropbox -O fg13.png
+INPUT ./fg14.png
+INPUT ./fg14.png
+INPUT fg14.png
+INPUT extractbb -B cropbox -O fg14.png
 INPUT out/main.aux

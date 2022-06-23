@@ -1,0 +1,129 @@
+\documentclass[dvipdfmx,autodetect-engine,titlepage]{jsarticle}
+\usepackage[dvipdfm]{graphicx}
+\usepackage{ascmac}
+\usepackage{fancybox}
+\usepackage{listings}
+\usepackage{plistings}
+\usepackage{itembkbx}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage{graphics}
+\usepackage{listings}
+\usepackage{here}
+
+\lstset{%
+  language={C},
+  basicstyle={\small},%
+  identifierstyle={\small},%
+  commentstyle={\small\itshape\color[rgb]{0,0.5,0}},%
+  keywordstyle={\small\bfseries\color[rgb]{0,0,1}},%
+  ndkeywordstyle={\small},%
+  stringstyle={\small\ttfamily\color[rgb]{1,0,1}},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},%
+  numbers=left,%
+  xrightmargin=0zw,%
+  xleftmargin=3zw,%
+  numberstyle={\scriptsize},%
+  stepnumber=1,
+  numbersep=1zw,%
+  lineskip=-0.5ex%
+}
+
+\textheight=23cm
+\renewcommand{\figurename}{図}
+\renewcommand{\tablename}{表}
+\newenvironment{code}
+{\vspace{0.5zw}\VerbatimEnvironment  \begin{screen} 
+\baselineskip=1.0\normalbaselineskip
+ \begin{Verbatim}}
+{\end{Verbatim}
+\baselineskip=\normalbaselineskip
+ \end{screen}\vspace{0.5zw}} 
+
+\title{データモデリング(A1)\\
+リレーショナルデータベースにおけるモデリング\\
+}
+\author{2600200087-2\\Oku Wakana\\奥 若菜}
+\date{Jun.19 2022}
+
+\begin{document}
+
+\maketitle
+
+\section{フレネル領域}
+\subsection{問題}
+教科書26ページの問2について、フレネル領域で放射パターンが距離によって変わる理由を説明せよ。
+\subsection{解答}
+放射パターンが変化する理由として、フレネル領域において、開口の中心開口の端部の距離差に相当する位相差が生じるため、距離によって位相が異なること、伝搬距離の違いから、振幅分布が開口上で均一にならないこと
+が挙げられる。\\
+
+
+\section{遠方領域}
+\subsection{概要}
+同じく問4について、動作周波数が800MHzと1.2GHzである二つの送信アンテナがあり、いずれも最大開口形は1.2mである。これらのアンテナの指向性を測定するために必要な距離を求めよ。なお、測定に用いる受信アンテナは波長に比べて小さいとする。
+
+\subsection{解答}
+アンテナから観測点までの距離を\begin{math}r\end{math}とすると、\begin{math}
+  rが r_f=2D^2/ \lambda 
+\end{math}より大きいとき、アンテナの放射強度の方向依存性を表す放射パターンが距離により変化しないとみなせる。よって、今回は\begin{math}
+  r_f
+\end{math}をアンテナの指向性を測定するために必要な最小の距離とする。\\
+
+(1) 800MHzのとき
+\begin{eqnarray*}
+  \lambda = \frac{3.0 \times  10^8 [m/s]}{8.0 \times  10^8 [Hz]}
+  = 0.375 [m]
+\end{eqnarray*}
+
+\begin{eqnarray*}
+  r_f = \frac{2(1.2)^2[m^2]}{0.375[m]}
+  = 7.68[m]\\
+\end{eqnarray*}
+
+(2)1.2GHzのとき
+\begin{eqnarray*}
+  \lambda = \frac{3.0 \times  10^8 [m/s]}{1.2 \times 10^10[Hz]}
+  =0.025[m]
+\end{eqnarray*}
+
+\begin{eqnarray*}
+  r_f = \frac{2(1.2)^2[m^2]}{0.025[m]}
+  =115.2[m]\\\\
+\end{eqnarray*}
+
+\section{微小ダイポールアンテナの指向性利得}
+\subsection{問題}
+同じく問5について、原点z軸に沿って配置した微小ダイポールアンテナの指向性利得\begin{math}
+  G_dをc
+\end{math}の関数として導出する。
+
+\subsection{解答}
+教科書(2・23)より指向性利得は、以下の式で求められる。
+
+\begin{eqnarray*}
+  G_d(\theta) = \frac{{| D(\theta) \vert }^2}{\frac{1}{4\pi} \int_{0}^{2\pi}  \,d\phi \int_{0}^{\pi} {| D(\theta) \vert }^2 \sin\theta \,d\theta } \\\\
+\end{eqnarray*}
+
+微小ダイポールアンテナの指向性係数は、
+\begin{eqnarray*}
+  D(\theta) = \sin\theta \\
+\end{eqnarray*}
+
+よって、微小ダイポールアンテナの指向性利得\begin{math}
+  G_d(\theta)
+\end{math}は
+
+\begin{eqnarray*}
+  G_d(\theta) &=& \frac{\sin^2\theta }{\frac{1}{4\pi} \int_{0}^{2\pi} \,d\phi \int_{0}^{\pi} \sin^3\theta \,d\theta  }  \\\\\\
+  &=& \frac{4\pi \sin^2\theta }{ \int_{0}^{2\pi} \,d\phi \frac{1}{2} \int_{0}^{\pi}  \sin\theta - \sin\theta\cos2\theta \,d\theta  } \\\\\\
+  &=& \frac{4\pi \sin^2\theta }{ \int_{0}^{2\pi} \,d\phi \frac{1}{4} \int_{0}^{\pi}  -3\sin\theta - \sin3\theta\,d\theta  } \\\\\\
+  &=& \frac{16\pi \sin^2\theta }{ 2\pi [-3\cos\theta + \frac{1}{3}\cos3\theta]_{0}^{\pi}} \\\\\\
+  &=& \frac{16\pi \sin^2\theta }{ 2\pi \frac{16}{3}} \\\\\\
+  &=& \frac{3\sin^2\theta}{2}\\\\
+\end{eqnarray*}
+
+と求められた。
+
+\end{document}

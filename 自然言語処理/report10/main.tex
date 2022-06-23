@@ -1,0 +1,85 @@
+\documentclass[dvipdfmx,autodetect-engine,titlepage]{jsarticle}
+\usepackage[dvipdfm]{graphicx}
+\usepackage{ascmac}
+\usepackage{fancybox}
+\usepackage{listings}
+\usepackage{plistings}
+\usepackage{itembkbx}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage{graphics}
+\usepackage{listings}
+\usepackage{here}
+
+\lstset{%
+  language={C},
+  basicstyle={\small},%
+  identifierstyle={\small},%
+  commentstyle={\small\itshape\color[rgb]{0,0.5,0}},%
+  keywordstyle={\small\bfseries\color[rgb]{0,0,1}},%
+  ndkeywordstyle={\small},%
+  stringstyle={\small\ttfamily\color[rgb]{1,0,1}},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},%
+  numbers=left,%
+  xrightmargin=0zw,%
+  xleftmargin=3zw,%
+  numberstyle={\scriptsize},%
+  stepnumber=1,
+  numbersep=1zw,%
+  lineskip=-0.5ex%
+}
+
+\textheight=23cm
+\renewcommand{\figurename}{図}
+\renewcommand{\tablename}{表}
+\newenvironment{code}
+{\vspace{0.5zw}\VerbatimEnvironment  \begin{screen} 
+\baselineskip=1.0\normalbaselineskip
+ \begin{Verbatim}}
+{\end{Verbatim}
+\baselineskip=\normalbaselineskip
+ \end{screen}\vspace{0.5zw}} 
+
+\title{自然言語処理(R)\\
+第10回レポート\\
+}
+\author{26002000872\\Oku Wakana\\奥 若菜}
+\date{Jun. 17 2022}
+
+\begin{document}
+
+\maketitle
+
+\section{課題内容}
+複数の意味を取りうる単語を2つ選択し、それぞれの語義
+を示す。また、それぞれの語義について、その語義の単語を持つ例文を
+２つ以上示し、それぞれの語義を決定するための手掛かりとなる語について説明する。\\
+
+
+\section{甘い}
+\subsection{砂糖や蜜のような味である}
+(1)このケーキはとても甘い。(2)私は甘いものが食べたい。
+
+\subsection{厳しさに欠けているさま}
+(1)お父さんは子供に甘い。(2)私は他人に厳しく、自分に甘い。
+
+\subsection{物事の機能があるべき状態より衰えているさま}
+(1)ハサミの切れ味が甘くなる。(2)ネジの締まりが甘い。
+
+\subsection{説明}
+2.1の(1)(2)はそれぞれ「ケーキ」「食べたい」という語があることから、食べ物の味を指す「甘い」である。また、2.2の(1)(2)はそれぞれ「お父さん」「私」と
+甘いとされるのが人物であることから、人の性質を指す「甘い」だとわかる。対して、2.3の(1)(2)はそれぞれ「ハサミ」「ネジ」と、甘いとされるのが道具や物であることから、物事の機能の状態を指す「甘い」であると
+わかる。\\
+
+
+\section{かける}
+\subsection{かたい物の一部分が壊れてとれる}
+(1)昔治療した歯が欠けた。(2)乱暴な扱いでコップが欠ける。
+\subsection{揃うべきものの一部分が抜けている}
+(1)メンバーが一人かける。(2)百科事典が一巻かけている。
+\subsection{説明}
+2.1の(1)(2)はそれぞれ「歯」「コップ」という語があることから、かたい物の一部分が壊れてとれるという意味の「欠ける」であることがわかる。
+また、2.2の(1)(2)はそれぞれ「一人」「一巻」という一単位を表す語があることから、一部分が抜けているという意味の「欠ける」であることがわかる。
+\end{document}

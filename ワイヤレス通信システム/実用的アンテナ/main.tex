@@ -1,0 +1,102 @@
+\documentclass[dvipdfmx,autodetect-engine,titlepage]{jsarticle}
+\usepackage[dvipdfm]{graphicx}
+\usepackage{ascmac}
+\usepackage{fancybox}
+\usepackage{listings}
+\usepackage{plistings}
+\usepackage{itembkbx}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage{graphics}
+\usepackage{here}
+
+\lstset{
+  basicstyle={\ttfamily},
+  identifierstyle={\small},
+  commentstyle={\smallitshape},
+  keywordstyle={\small\bfseries},
+  ndkeywordstyle={\small},
+  stringstyle={\small\ttfamily},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},
+  numbers=left,
+  xrightmargin=0zw,
+  xleftmargin=3zw,
+  numberstyle={\scriptsize},
+  stepnumber=1,
+  numbersep=1zw,
+  lineskip=-0.5ex
+}
+
+\textheight=23cm
+\renewcommand{\figurename}{図}
+\renewcommand{\tablename}{表}
+\newenvironment{code}
+{\vspace{0.5zw}\VerbatimEnvironment  \begin{screen} 
+\baselineskip=1.0\normalbaselineskip
+ \begin{Verbatim}}
+{\end{Verbatim}
+\baselineskip=\normalbaselineskip
+ \end{screen}\vspace{0.5zw}} 
+
+\title{ワイヤレス通信システム(B1)\\
+11th Week 実用的アンテナ\\
+}
+\author{2600200087-2\\Oku Wakana\\奥 若菜}
+\date{July 10 2022}
+
+\begin{document}
+
+\maketitle
+\section*{演習問題}
+\subsection*{問2}
+放射器\#1,導波器\#2,反射器\#3から構成される3素子八木・宇田アンテナの入力インピーダンスを\begin{math}
+  Z_{11}からZ_{33}
+\end{math}で表記される自己および相互インピーダンスを用いて導出せよ。
+
+\subsubsection*{解答}
+放射器\#1の給電点にかかる電圧は、
+\begin{eqnarray}
+  V_1 = Z_{11}I_1 + Z_{12}I_2 + Z_{13}I_3
+\end{eqnarray}
+　\\
+また、導波器\#2,反射器\#3は電圧がかからないため、
+
+\begin{eqnarray}
+  V_2 = Z_{21}I_1 + Z_{22}I_2 + Z_{23}I_3 = 0\\\nonumber\\
+  V_3 = Z_{31}I_1 + Z_{32}I_2 + Z_{33}I_3 = 0
+\end{eqnarray}
+　\\
+(1)〜(3)より入力インピーダンス\begin{math}
+  Z_{in}
+\end{math}は、
+
+\begin{eqnarray*}
+  Z_{in} = Z_{11} + \frac{2Z_{12}Z_{23}Z_{31} - Z_{22}{Z_{13}}^2 - Z_{33}{Z_{12}}^2}{Z_{22}Z_{33}-{Z_{23}}^2}
+\end{eqnarray*}
+
+　\\
+\subsection*{問3}
+直径9mmの十分薄く電気・磁気的に影響のないコアに巻かれたノーマルモードヘリカルアンテナが周波数1100MHzにおいて円偏波を放射する条件を示せ。
+
+\subsubsection*{解答}
+
+周波数1100MHzにおける波長λは、
+\begin{eqnarray*}
+  \lambda  = \frac{3.0 \times 10^8}{1.1 \times 10^9} = 0.273
+\end{eqnarray*}
+　\\
+\begin{math}
+  E_{\theta }とE_{\phi }
+\end{math}は位相が直交しているため、円偏波の条件は
+\begin{math}
+  | E_{\theta } \vert = | E_{\phi }\vert 
+\end{math}である。\\
+
+ヘリカルの1周期の周長は、
+\begin{eqnarray*}
+  C = 2\pi a = 
+\end{eqnarray*}
+
+\end{document}

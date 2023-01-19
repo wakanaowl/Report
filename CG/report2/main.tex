@@ -1,0 +1,108 @@
+\documentclass[dvipdfmx,autodetect-engine,titlepage]{jsarticle}
+\usepackage[dvipdfm]{graphicx}
+\usepackage{ascmac}
+\usepackage{fancybox}
+\usepackage{listings}
+\usepackage{plistings}
+\usepackage{itembkbx}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage{graphics}
+\usepackage{listings}
+\usepackage{here}
+
+\lstset{%
+  language={C},
+  basicstyle={\small},%
+  identifierstyle={\small},%
+  commentstyle={\small\itshape\color[rgb]{0,0.5,0}},%
+  keywordstyle={\small\bfseries\color[rgb]{0,0,1}},%
+  ndkeywordstyle={\small},%
+  stringstyle={\small\ttfamily\color[rgb]{1,0,1}},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},%
+  numbers=left,%
+  xrightmargin=0zw,%
+  xleftmargin=3zw,%
+  numberstyle={\scriptsize},%
+  stepnumber=1,
+  numbersep=1zw,%
+  lineskip=-0.5ex%
+}
+
+\textheight=23cm
+\renewcommand{\figurename}{図}
+\renewcommand{\tablename}{表}
+\newenvironment{code}
+{\vspace{0.5zw}\VerbatimEnvironment  \begin{screen} 
+\baselineskip=1.0\normalbaselineskip
+ \begin{Verbatim}}
+{\end{Verbatim}
+\baselineskip=\normalbaselineskip
+ \end{screen}\vspace{0.5zw}} 
+
+\title{コンピュータグラフィックス(Q)\\
+ミニレポート(1)\\
+物体をシーンに配置する(合成変換)\\
+}
+\author{2600200087-2\\Oku Wakana\\奥 若菜}
+\date{Nov. 18 2022}
+
+\begin{document}
+
+\maketitle
+
+\section*{問題}
+\subsection*{考えてみよう(4)}
+点(1,0,0)を原点を中心に2倍拡大し、z軸方向に+10並行移動させる。\\
+\begin{eqnarray*}
+  \begin{pmatrix}
+    2 & 0 & 0 & 0 \\
+    0 & 2 & 0 & 0 \\
+    0 & 0 & 2 & 10 \\
+    0 & 0 & 0 & 1 \\
+  \end{pmatrix} 
+  \begin{pmatrix}
+    1 \\ 
+    0 \\ 
+    0 \\ 
+    1 
+  \end{pmatrix}
+  = \begin{pmatrix}
+    2 \\ 
+    0 \\ 
+    10 \\ 
+    1 \\
+  \end{pmatrix}
+\end{eqnarray*}
+　\\
+よって、点(1,0,0)は点(2,0,10)に変換される。\\
+
+
+\subsection*{考えてみよう(5)}
+点(1,0,0)をz軸方向に+10並行移動させ、原点を中心に2倍拡大する。\\
+\begin{eqnarray*}
+  \begin{pmatrix}
+    2 & 0 & 0 & 0 \\
+    0 & 2 & 0 & 0 \\
+    0 & 0 & 2 & 20 \\
+    0 & 0 & 0 & 1 \\
+  \end{pmatrix} 
+  \begin{pmatrix}
+    1 \\ 
+    0 \\ 
+    0 \\ 
+    1 
+  \end{pmatrix}
+  = \begin{pmatrix}
+    2 \\ 
+    0 \\ 
+    20 \\ 
+    1 \\
+  \end{pmatrix}
+\end{eqnarray*}
+　\\
+よって、点(1,0,0)は点(2,0,20)に変換される。
+
+\end{document}

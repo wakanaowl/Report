@@ -1,0 +1,84 @@
+\documentclass[dvipdfmx,autodetect-engine,titlepage]{jsarticle}
+\usepackage[dvipdfm]{graphicx}
+\usepackage{ascmac}
+\usepackage{fancybox}
+\usepackage{listings}
+\usepackage{plistings}
+\usepackage{itembkbx}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage{graphics}
+\usepackage{listings}
+\usepackage{here}
+
+\lstset{%
+  language={C},
+  basicstyle={\small},%
+  identifierstyle={\small},%
+  commentstyle={\small\itshape\color[rgb]{0,0.5,0}},%
+  keywordstyle={\small\bfseries\color[rgb]{0,0,1}},%
+  ndkeywordstyle={\small},%
+  stringstyle={\small\ttfamily\color[rgb]{1,0,1}},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},%
+  numbers=left,%
+  xrightmargin=0zw,%
+  xleftmargin=3zw,%
+  numberstyle={\scriptsize},%
+  stepnumber=1,
+  numbersep=1zw,%
+  lineskip=-0.5ex%
+}
+
+\textheight=23cm
+\renewcommand{\figurename}{図}
+\renewcommand{\tablename}{表}
+\newenvironment{code}
+{\vspace{0.5zw}\VerbatimEnvironment  \begin{screen} 
+\baselineskip=1.0\normalbaselineskip
+ \begin{Verbatim}}
+{\end{Verbatim}
+\baselineskip=\normalbaselineskip
+ \end{screen}\vspace{0.5zw}} 
+
+\title{コンピュータグラフィックス(Q)\\
+ミニレポート(2)\\
+投影と画像生成\\
+}
+\author{2600200087-2\\Oku Wakana\\奥 若菜}
+\date{Oct.29 2022}
+
+\begin{document}
+
+\maketitle
+
+\section*{問題}
+視点座標から2次元スクリーン座標へのx座標の変
+換式で，簡単のため，d=1とおいて，以下とする
+\begin{eqnarray*}
+  x_{S} = \frac{1}{z_{E}}x_{E} \\\\
+  y_{S} = \frac{1}{z_{E}}y_{E} \\
+\end{eqnarray*}
+点\begin{math}
+  A(1,0,z)_{E} と B(2,0,z)_{E}
+\end{math}
+のスクリーン座標での距離を，Z=2,4,6,8,10の場合についてそれぞれ求める.\\\\
+
+表にまとめたものが以下である．\\
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c|c|c|c|}
+  \hline
+  z  & A(xs,ys) & B(xs,ys) & AB間の距離 \\ \hline
+  2  & (1/2,0)  & (1,0)    & 1/2    \\ \hline
+  4  & (1/4,0)  & (1/2,0)  & 1/4    \\ \hline
+  6  & (1/6,0)  & (1/3,0)  & 1/6    \\ \hline
+  8  & (1/8,0)  & (1/4,0)  & 1/8    \\ \hline
+  10 & (1/10,0) & (1/5,0)  & 1/10   \\ \hline
+  \end{tabular}
+  \end{table}
+
+
+\end{document}

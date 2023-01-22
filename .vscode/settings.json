@@ -43,7 +43,7 @@
     "*.gls",
     "*.ist",
     "*.fls",
-    "*.log",
+    //"*.log",
     "*.fdb_latexmk",
     "*.snm",
     "*.nav",

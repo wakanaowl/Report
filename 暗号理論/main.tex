@@ -53,78 +53,189 @@
 
 \section{AES（Advanced Encryption Standard）}
 \subsection{概要}
-AES（Advanced Encryption Standard）は、2001年にアメリカが標準規格として定めた共通鍵暗号アルゴリズムである。
-AES以前には、IBM社が構築したDESという共通鍵暗号アルゴリズムが標準だったが、より強力なプロセッサの登場によりセキュリティ上の懸念が浮上した。
-そこで、アメリカ国立標準技術研究所（NIST）が公募し、ベルギーの研究者Joan DaemenとVincent Rijimenが設計した
-RijndaelというアルゴリズムがAESとして採用された。
+AES（Advanced Encryption Standard）は、2001年に米国が標準規格として定めた共通鍵暗号アルゴリズムである。
+AES以前には、IBM社が構築したDES（DataEncryption Standard）という共通鍵暗号アルゴリズムが標準だったが、強力なプロセッサの登場によりセキュリティ上の懸念が浮上した。
+そこで、米国の国立標準技術研究所（NIST）は1997年、DESに代わる共通鍵暗号を公募し、ベルギーの研究者Joan DaemenとVincent Rijimenが設計した
+RijndaelというアルゴリズムがAESとして採用された。比較的短い56bitの鍵を使用するDESとは異なり、AESは128bit、192bit、256bitのいずれかの鍵長を使用してデータの暗号化と復号化を行う。
+
+\subsection{共通鍵暗号の特徴}
+AESなどの共通鍵暗号は、データをやりとりする送信者と受信者が同じ暗号鍵を使って、データの暗号化や復号を実行する。送信者と受信者が異なる暗号鍵を使う公開鍵暗号よりも、一般に暗号化や復号の処理にかかる負荷が低い。
+そのためTLSや無線LANの暗号化通信では、送信者と受信者が公開鍵暗号を使って共通鍵暗号の暗号鍵をやりとりし、処理の負荷が小さい共通鍵暗号で通信データを暗号化する。
+
+\subsection{AESが利用される場面}
+AESは無線LAN（Wi-Fi）の通信の暗号化、インターネット上の通信を暗号化するSSL/TLS、ファイルの暗号化、HDDなどストレージの暗号化などに使われている。通信における盗聴の防止、盗難や不正アクセスによる情報漏えいの防止など、データの保護によるセキュリティ強化が可能となる。
 
 \subsection{AESの暗号化操作}
-比較的短い56bitの鍵を使用するDESとは異なり、AESは128bit、192bit、256bitのいずれかの鍵長を使用してデータを暗号化と復号化を行う。
-AESは平文（入力データ）を128bit単位のブロックに分割し、
-\section{TLS}
+AESで扱うデータブロックサイズおよび鍵サイズは128bit、192bit、256bitの3種類が定義されており、それぞれ独立に決定することができる。
+そして、暗号化は複数の演算を連続して行うラウンドと呼ばれる処理単位を繰り返すことによって行われる。ラウンド数はデータブロックおよび鍵サイズの組み合わせにより、10,12,14のいずれかに決定される。
+これを\textgt{図1}に示す。
+また、各ラウンドはバイト交換、行シフト置換、列変換、鍵加算の4つの処理からなる。\\
+
+\begin{table}[H]
+  \centering
+  \caption{データブロックと鍵サイズに対するデータ変換ラウンド数}
+  \begin{tabular}{cc|ccc}
+  \hline
+                            &     & \multicolumn{3}{c}{データブロックサイズ} \\ \cline{3-5} 
+                            &     & 128      & 192      & 256      \\ \hline
+  \multicolumn{1}{c|}{}     & 128 & 10       & 12       & 14       \\
+  \multicolumn{1}{c|}{鍵サイズ} & 192 & 12       & 12       & 14       \\
+  \multicolumn{1}{c|}{}     & 256 & 14       & 14       & 14       \\ \hline
+  \end{tabular}
+  \end{table}
+
+
+\subsubsection{バイト交換（SubBytes）}
+s-boxとも呼ばれるバイト交換操作では、次の2種類の変換処理が施される。
+\begin{itemize}
+  \item 
+  \begin{math}
+    中間データ a_{i,j}をGF(2^8)  上の元とみなし、その乗法逆元x_{i,j}を表参照などによって求める。
+  \end{math}
+
+  \item 
+  \begin{math}
+    x_{i,j}に式(1)に示すアフィン変換を施し、新たなa_{i,j}を生成する。ここで8ビットデータx_{i,j}の各
+    ビットの値を下位よりx_{0},x_{1},...x_{7}と表現している。y_{0},y_{1},y_{7}は式(1)で生成したa_{i,j}
+    の各ビットの値を示す。
+  \end{math}
+\end{itemize}
+
+\begin{eqnarray}
+  \begin{bmatrix}
+    y_{0}\\
+    y_{1}\\
+    y_{2}\\
+    y_{3}\\
+    y_{4}\\
+    y_{5}\\
+    y_{6}\\
+    y_{7}\\
+  \end{bmatrix}
+  =   
+  \begin{bmatrix}
+    1 & 0 & 0 & 0 & 1 & 1 & 1 & 1\\
+    1 & 1 & 0 & 0 & 0 & 1 & 1 & 1\\
+    1 & 1 & 1 & 0 & 0 & 0 & 1 & 1\\
+    1 & 1 & 1 & 1 & 0 & 0 & 0 & 1\\
+    1 & 1 & 1 & 1 & 1 & 0 & 0 & 0\\
+    0 & 1 & 1 & 1 & 1 & 1 & 0 & 0\\
+    0 & 0 & 1 & 1 & 1 & 1 & 1 & 0\\
+    0 & 0 & 0 & 1 & 1 & 1 & 1 & 1\\
+  \end{bmatrix}  
+  \begin{bmatrix}
+    x_{0}\\
+    x_{1}\\
+    x_{2}\\
+    x_{3}\\
+    x_{4}\\
+    x_{5}\\
+    x_{6}\\
+    x_{7}\\
+  \end{bmatrix}
+  +
+  \begin{bmatrix}
+    1\\
+    1\\
+    0\\
+    0\\
+    0\\
+    1\\
+    1\\
+    0\\
+  \end{bmatrix}
+\end{eqnarray}
+　
+\subsubsection{行シフト置換（ShiftRows）}
+行シフト置換操作では中間データの各行に対し、左巡回シフトを用いたデータ変換を行う。
+ここでのシフト量は中間データの列数と中間データ内のシンボル\begin{math}
+  a_{i,j}の添字iにより決定する。
+\end{math}ただし第1行目のシンボルは列数によらず巡回シフトされない。\\
+
+\subsubsection{列変換（MixColumns）}
+行シフト置換が行方向の変換を行うのに対し、ここでは列方向の変換を行う。各列に配置された
+\begin{math}
+  a_{0,j},a_{1,j},a_{2,j},a_{3,j}（第j+1列目の各シンボル）をGF(2^8)上の3次元多項式
+  の係数と考え、式(2)に示すような多項式a(x)を定義する。
+\end{math}
+
+\begin{eqnarray}
+  a(x) = a_{3,j}x^3 + a_{2,j}x^2 + a_{1,j}x + a_{0,j}
+\end{eqnarray}
+　\\
+列変換操作による変換結果は式(3)に示すように定義され、求められた3次元多項式の係数4つを変換後の中間データ内のシンボル
+\begin{math}
+  a_{i,j}とする。
+\end{math}
+
+\begin{eqnarray}
+  a(x)c(x) \bmod (x^4 + 1)
+\end{eqnarray}
+
+\subsubsection{鍵加算（AddRoundKey）}
+鍵加算操作部では中間データに、鍵スケジュール部により生成される同サイズのラウンドキーがGF(2)上の
+加算演算により付加される。
+
+\section{TLS（Transport Layer Security）}
 \subsection{概要}
-同じく問4について、動作周波数が800MHzと1.2GHzである二つの送信アンテナがあり、いずれも最大開口形は1.2mである。これらのアンテナの指向性を測定するために必要な距離を求めよ。なお、測定に用いる受信アンテナは波長に比べて小さいとする。
+TLS（Transport Layer Security）は、インターネットなどのTCP/IPネットワークでデータを暗号化して送受信するためのプロトコルである。
+SSL（Secure Socket Layer）の後継プロトコルであり、SSLをもとに標準化されている。SSLという名称が既に広く定着していたため、実際にはTLSを指していてもSSLと表記したり、「SSL/TLS」「TLS/SSL」などと両者を併記することが多い。現在実際に使われているのはほとんどがTLSである。
+TLSはデジタル証明書（公開鍵証明書）による通信相手の認証（一般的にはサーバの認証）と、共通鍵暗号による通信の暗号化、ハッシュ関数による改竄検知などの機能を提供する。
+\\
 
-\subsection{解答}
-アンテナから観測点までの距離を\begin{math}r\end{math}とすると、\begin{math}
-  rが r_f=2D^2/ \lambda 
-\end{math}より大きいとき、アンテナの放射強度の方向依存性を表す放射パターンが距離により変化しないとみなせる。よって、今回は\begin{math}
-  r_f
-\end{math}をアンテナの指向性を測定するために必要な最小の距離とする。\\
+\subsection{TLSが利用される場面}
+TLSはHTTPなどのアプリケーション層のプロトコルと組み合わせることで、HTTPSなどセキュアな通信プロトコルを実現している。
+Webのデータ通信に用いられるHTTPには 暗号化についての仕様がないため、通信データの盗聴や改ざんを防ぐために、TLSで暗号化された伝送路を確立し、その中でHTTPによる通信を行うという方式が用いられる。
+この通信方式は、スキームとして「https://」が用いられ、Webページのアドレス欄がこのスキームで始まっていることを確認すれば、ブラウザとWebサーバ間でデータの送受信が保護されていることが確認できる。
+インターネットバンキング等において、ブラウザ上に入力される認証情報や決済情報が漏洩することを防ぐために、通信データはTLSなどを用いて必ず暗号化される。\\\\
+TLSはTCPやUDPと同じ、いわゆるトランスポート層のプロトコルで、TCPの代替として利用することができるため、HTTPに限らず様々な上位層のプロトコルと組み合わせて使用され、インターネットにおける汎用的な通信の暗号化方式として定着している。
+HTTPSを含め、TLSが利用されるセキュアな通信プロトコルを表2に示す。\\
 
-(1) 800MHzのとき
-\begin{eqnarray*}
-  \lambda = \frac{3.0 \times  10^8 [m/s]}{8.0 \times  10^8 [Hz]}
-  = 0.375 [m]
-\end{eqnarray*}
+\begin{table}[H]
+  \centering
+  \caption{SSLと組み合わせた通信プロトコル}
+  \begin{tabular}{|l|l|l|l|}
+  \hline
+  SSLと組み合わせたプロトコル & ポート番号 & 元のプロトコル      & ポート番号 \\ \hline
+  HTTPS           & 443   & HTTP         & 80    \\ \hline
+  SMTPS           & 465   & SMTP         & 25    \\ \hline
+  LDAPS           & 636   & LDAP         & 389   \\ \hline
+  FTPS（data）      & 989   & FTP（data）    & 20    \\ \hline
+  FTPS（control）   & 990   & FTP（control） & 21    \\ \hline
+  IMAPS           & 993   & IMAP         & 143   \\ \hline
+  POP3S           & 995   & POP3         & 110   \\ \hline
+  \end{tabular}
+  \end{table}
 
-\begin{eqnarray*}
-  r_f = \frac{2(1.2)^2[m^2]}{0.375[m]}
-  = 7.68[m]\\
-\end{eqnarray*}
+\subsection{TLSの暗号化方式}
+TLSには公開鍵暗号と共通鍵暗号の両方が用いられる。クライアントがサーバに対してHTTPSでの 接続を要求すると、要求を受けたサーバは公開鍵とSSLサーバ証明書をクライアントに送信する。クライアントは証明書を検証した後、受け取った公開鍵で共通鍵を暗号しサーバ に送信する。暗号化された共通鍵を受け取ったサーバは、自分の秘密鍵で共通鍵を復号する。
+これ以降は両者が共通鍵を持つので、暗号化して通信を行うことができる。\\
 
-(2)1.2GHzのとき
-\begin{eqnarray*}
-  \lambda = \frac{3.0 \times  10^8 [m/s]}{1.2 \times 10^10[Hz]}
-  =0.025[m]
-\end{eqnarray*}
+\subsection{デジタル証明書の運用}
+TLSによる通信を行うには、サーバ側に認証局（CA：Certificate Authority）が署名したデジタル証明書（SSLサーバ証明書）が、クライアント側に同じ認証局の証明書か最上位認証局のルート証明書が必要となる。
+実際の運用では、サーバは著名ルートCA傘下の中間認証局から得た証明書を提示することが多い。Webブラウザなどのクライアントソフトには著名ルートCAの証明書があらかじめ同梱されており、利用者側でサイトごとに証明書の取り寄せなどを行う必要はほとんどない。\\
 
-\begin{eqnarray*}
-  r_f = \frac{2(1.2)^2[m^2]}{0.025[m]}
-  =115.2[m]\\\\
-\end{eqnarray*}
+\subsection{TLSのプロトコル}
+TLSには主なプロトコルとして暗号通信に必要な鍵 (master secret) を鍵共有してセッションを確立するTLSハンドシェイクプロトコルと、master secretを用いて暗号通信することで確立されたセッションにおけるコネクションをセキュアにするTLSレコードプロトコルがある。
+その他に用いている暗号方式やハッシュ関数等のアルゴリズムを変更する Change Cipher Spec プロトコルと通信相手からの通信終了要求や何らかのエラーを通知する アラートプロトコルがある。\\
 
-\section{微小ダイポールアンテナの指向性利得}
-\subsection{問題}
-同じく問5について、原点z軸に沿って配置した微小ダイポールアンテナの指向性利得\begin{math}
-  G_dをc
-\end{math}の関数として導出する。
+\begin{thebibliography}{99}
 
-\subsection{解答}
-教科書(2・23)より指向性利得は、以下の式で求められる。
+  \bibitem{etx} 誤り訂正符号と暗号の基礎数理 ,笠原正雄, 佐竹賢治, コロナ社発行
 
-\begin{eqnarray*}
-  G_d(\theta) = \frac{{| D(\theta) \vert }^2}{\frac{1}{4\pi} \int_{0}^{2\pi}  \,d\phi \int_{0}^{\pi} {| D(\theta) \vert }^2 \sin\theta \,d\theta } \\\\
-\end{eqnarray*}
+  \bibitem{etx}Advanced Encryption Standard - Wikipedia,
+  available from \textless\url{https://ja.wikipedia.org/wiki/Advanced_Encryption_Standard}\textgreater
 
-微小ダイポールアンテナの指向性係数は、
-\begin{eqnarray*}
-  D(\theta) = \sin\theta \\
-\end{eqnarray*}
+  \bibitem{etx}AES (Advanced Encryption Standard) - IT用語辞典 e-Words,
+  available from \textless\url{https://e-words.jp/w/AES.html}\textgreater
 
-よって、微小ダイポールアンテナの指向性利得\begin{math}
-  G_d(\theta)
-\end{math}は
+  \bibitem{etx}Transport Layer Security - Wikipedia,
+  available from \textless\url{https://ja.wikipedia.org/wiki/Transport_Layer_Security}\textgreater
 
-\begin{eqnarray*}
-  G_d(\theta) &=& \frac{\sin^2\theta }{\frac{1}{4\pi} \int_{0}^{2\pi} \,d\phi \int_{0}^{\pi} \sin^3\theta \,d\theta  }  \\\\\\
-  &=& \frac{4\pi \sin^2\theta }{ \int_{0}^{2\pi} \,d\phi \frac{1}{2} \int_{0}^{\pi}  \sin\theta - \sin\theta\cos2\theta \,d\theta  } \\\\\\
-  &=& \frac{4\pi \sin^2\theta }{ \int_{0}^{2\pi} \,d\phi \frac{1}{4} \int_{0}^{\pi}  -3\sin\theta - \sin3\theta\,d\theta  } \\\\\\
-  &=& \frac{16\pi \sin^2\theta }{ 2\pi [-3\cos\theta + \frac{1}{3}\cos3\theta]_{0}^{\pi}} \\\\\\
-  &=& \frac{16\pi \sin^2\theta }{ 2\pi \frac{16}{3}} \\\\\\
-  &=& \frac{3\sin^2\theta}{2}\\\\
-\end{eqnarray*}
+  \bibitem{etx}TLSとは - 意味をわかりやすく - IT用語辞典 e-Words,
+  available from \textless\url{https://e-words.jp/w/TLS.html}\textgreater
 
-と求められた。
+
+\end{thebibliography}
 
 \end{document}

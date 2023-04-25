@@ -1,0 +1,221 @@
+This is e-pTeX, Version 3.141592653-p3.9.1-210218-2.6 (utf8.euc) (TeX Live 2022/dev/Debian) (preloaded format=platex 2023.3.8)  25 APR 2023 11:58
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**/home/woku/report/Report/semi構築/0425-lab.tex
+(/home/woku/report/Report/semi罕^^8b膀^^89/0425-lab.tex
+pLaTeX2e <2021-11-15> (based on LaTeX2e <2021-11-15> patch level 1)
+L3 programming layer <2022-01-21> (/usr/share/texlive/texmf-dist/tex/platex/mysty/eco.cls
+Document Class: eco 2013/06/09 v1.10 Mouri-semi eco Class
+\c@@paper=\count184
+\h=\dimen154
+\JQ=\dimen155
+\Q=\dimen156
+\@Q=\dimen157
+\ChtE=\skip47
+\CdpE=\skip48
+\CwdE=\skip49
+\CvsE=\skip50
+\normalbaselineskip=\skip51
+\author@count=\count185
+\label@count=\count186
+\email@count=\count187
+\affiliate@count=\count188
+\paffiliate@count=\count189
+\shubetutitlesep=\skip52
+\JEhonbunsep=\skip53
+\Etitleauthorsep=\skip54
+\Eauthorreceivesep=\skip55
+\Ereceiveabstsep=\skip56
+\Eabstkeywordsep=\skip57
+\Jtitlejauthorsep=\skip58
+\Jauthorjreceivesep=\skip59
+\Jreceivejabstsep=\skip60
+\Jabstsepjkeyword=\skip61
+\Jkeywordetitle=\skip62
+\Jetitleeauthor=\skip63
+\Jeauthorereceivesep=\skip64
+\Jereceiveeabstsep=\skip65
+\Jeabstekeywordsep=\skip66
+\@abstractbox=\box67
+\@eabstractbox=\box68
+\c@part=\count190
+\c@section=\count191
+\c@subsection=\count192
+\c@subsubsection=\count193
+\c@paragraph=\count194
+\c@subparagraph=\count195
+\@tempboxb=\box69
+\SECTwd=\box70
+\section@height=\skip67
+\@abovecapskip=\dimen158
+\@belowcapskip=\dimen159
+\c@figure=\count196
+\c@table=\count197
+\abovecaptionskip=\skip68
+\belowcaptionskip=\skip69
+\@tempboxb=\box71
+\capwidth=\dimen160
+\ecapwidth=\dimen161
+\bibindent=\dimen162
+\c@profile=\count198
+\mathindent=\dimen163
+\@dummyfigbox=\box72
+\twocolcapwidth=\dimen164
+\twocolecapwidth=\dimen165
+\@compare@result=\count199
+\semiyear=\toks17
+\semiseq=\toks18
+\dateyear=\toks19
+\datemonth=\toks20
+\dateday=\toks21
+\dateweek=\toks22
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks23
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2021/03/04 v1.4d Standard LaTeX Graphics (DPC,SPQR)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: dvips.def on input line 107.
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/dvips.def
+File: dvips.def 2017/06/20 v3.1d Graphics/color driver for dvips
+))
+\Gin@req@height=\dimen166
+\Gin@req@width=\dimen167
+) (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count266
+\lst@gtempboxa=\box73
+\lst@token=\toks24
+\lst@length=\count267
+\lst@currlwidth=\dimen168
+\lst@column=\count268
+\lst@pos=\count269
+\lst@lostspace=\dimen169
+\lst@width=\dimen170
+\lst@newlines=\count270
+\lst@lineno=\count271
+\lst@maxwidth=\dimen171
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2020/03/24 1.8d (Carsten Heinz)
+\c@lstnumber=\count272
+\lst@skipnumbers=\count273
+\lst@framebox=\box74
+) (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2020/03/24 1.8d listings configuration
+))
+Package: listings 2020/03/24 1.8d (Carsten Heinz)
+(/usr/share/texlive/texmf-dist/tex/platex/mysty/jlisting.sty
+Package: jlisting 2006/02/20 0.2 (Thor)
+\lst@nextchar=\count274
+\lst@inputfile=\read2
+) (/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip16
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+) (/usr/share/texlive/texmf-dist/tex/latex/setspace/setspace.sty
+Package: setspace 2011/12/19 v6.7a set line spacing
+) (/usr/share/texlive/texmf-dist/tex/latex/here/here.sty) (/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count275
+\float@exts=\toks25
+\float@box=\box75
+\@float@everytoks=\toks26
+\@floatcapt=\box76
+) (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-dvips.def
+File: l3backend-dvips.def 2022-01-12 L3 backend support: dvips
+\l__pdf_internal_box=\box77
+\g__pdf_backend_object_int=\count276
+\l__pdf_backend_content_box=\box78
+\l__pdf_backend_model_box=\box79
+\g__pdf_backend_annotation_int=\count277
+\g__pdf_backend_link_int=\count278
+\g__pdf_backend_link_sf_int=\count279
+) (./0425-lab.aux)
+\openout1 = `0425-lab.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for JY1/mc/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for JT1/mc/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+\c@lstlisting=\count280
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <8.8711> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 36.
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <8.8711> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 36.
+LaTeX Font Info:    Font shape `JY1/fgb/m/n' will be
+(Font)              scaled to size 12.78766pt on input line 44.
+LaTeX Font Info:    Font shape `JT1/gt/bx/n' in size <19.2207> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 44.
+LaTeX Font Info:    Font shape `JY1/gt/bx/n' in size <19.2207> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 44.
+LaTeX Font Info:    Font shape `JT1/gt/bx/n' in size <12> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 44.
+LaTeX Font Info:    Font shape `JY1/gt/bx/n' in size <12> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 44.
+LaTeX Font Info:    Font shape `JY1/gt/m/n' will be
+(Font)              scaled to size 11.82806pt on input line 44.
+LaTeX Font Info:    Calculating math sizes for size <9.61035> on input line 44.
+LaTeX Font Info:    Font shape `JY1/mc/m/n' will be
+(Font)              scaled to size 14.78487pt on input line 44.
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <11.82813> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 47.
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <11.82813> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 47.
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <9.61035> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 70.
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <9.61035> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 70.
+LaTeX Font Info:    Font shape `JT1/mc/m/it' in size <9.61035> not available
+(Font)              Font shape `JT1/mc/m/n' tried instead on input line 94.
+LaTeX Font Info:    Font shape `JY1/mc/m/it' in size <9.61035> not available
+(Font)              Font shape `JY1/mc/m/n' tried instead on input line 94.
+[1
+
+
+]
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <8.13184> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 119.
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <8.13184> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 119.
+LaTeX Font Info:    Calculating math sizes for size <8.13184> on input line 122.
+File: fig/001.eps Graphic file (type eps)
+<fig/001.eps> [2]
+File: fig/002.eps Graphic file (type eps)
+<fig/002.eps>
+Overfull \hbox (29.17189pt too wide) in paragraph at lines 187--194
+ [][][][] 
+ []
+
+File: fig/003.eps Graphic file (type eps)
+<fig/003.eps>
+No file 0425-lab.bbl.
+[3] (./0425-lab.aux) ) 
+Here is how much of TeX's memory you used:
+ 3124 strings out of 478741
+ 48339 string characters out of 5860983
+ 360259 words of memory out of 5000000
+ 21557 multiletter control sequences out of 15000+600000
+ 487358 words of font info for 107 fonts, out of 8000000 for 9000
+ 929 hyphenation exceptions out of 8191
+ 55i,14n,62p,306b,386s stack positions out of 5000i,500n,10000p,200000b,80000s
+
+Output written on 0425-lab.dvi (3 pages, 21976 bytes).

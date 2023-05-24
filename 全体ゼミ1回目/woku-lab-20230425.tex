@@ -35,20 +35,20 @@
 
 \begin{abstract}
 	Linuxにおいて，プログラム実行時に共有ライブラリを動的リンクするために使用する環境変数にLD\_PRELOADがある．
-  この環境変数を使用することで，悪意のある共有ライブラリをプログラムにロードし，不正なコードを実行することをDynamic Linker Hijackingという．
+  この環境変数を使用することで，悪意のある共有ライブラリをプログラムにロードし，不正なコードを実行することをDynamic Linker Hijackingという．\cite{MITRE-ATT&CK}
   2021年に発見されたSymbioteは，すべての実行中のプロセスにロードされる共有ライブラリとして動作し，
   正当なプロセスの下で自身や他のマルウェアの痕跡を隠蔽する．
   本研究では，SymbioteのようなDynamic Linker Hijackingを行うマルウェアを動的解析し，その挙動を明らかにするとともに，効果的な検知手法の発見を目指す．
-
 \end{abstract}
 \maketitle
 
 
 \section{はじめに}
-近年，IoTデバイスの普及や企業のクラウドシフトにより，Linuxマシン上で動作するマルウェアが増加している．
+近年，IoTデバイスの普及や企業のクラウドシフトにより，Linuxマシン上で動作するマルウェアが増加している．\cite{TREND-MICRO}
 Linuxマシンの中にはサーバとして定常稼働しており，固定のIPアドレスが割り振られているものも多く，攻撃インフラとしての利用価値が高いことから，今後もLinuxマシンを標的とするマルウェアは増加すると予想される．
 
-2021年に発見されたSymbioteは，Linuxで一般的に見られるマルウェアとは異なる特徴を持ち，極めて検出が困難とされる．Symbioteは，単独の実行可能ファイルではなく，
+2021年に発見されたSymbioteは，Linuxで一般的に見られるマルウェアとは異なる特徴を持ち，極めて検出が困難とされる．\cite{Symbiote}
+Symbioteは，単独の実行可能ファイルではなく，
 すべての実行中のプロセスにロードされる共有ライブラリとして動作する．
 Linuxでは，環境変数 LD\_PRELOADを使用することで，プログラムによって要求される正当な共有ライブラリの代わりに，名前の一致する悪意のある共有ライブラリを呼び出すことが可能である．
 このような攻撃では正当なプロセスの下で実行がマスクされるため，プロセスベースの解析は回避される可能性が高い．
@@ -179,19 +179,21 @@ Intezer AnalyzeとVirusTotalを用いてSymbioteを探索したところ，表1�
 さらに16進でエンコードされた文字列をデコードすると，”command (woku-Standard-PC-i440FX-PIIX-1996)”という文字列が含まれることがわかる．
 これは，マルウェアを実行したゲストOSのマシンIDと一致する．\\
 
-FQDNの冒頭4文字は毎リクエストごとに異なることを踏まえ，ワイルドカードDNSレコードを使用して，DNSサーバ(ns.bancodobrasil.dev)のゾーン情報を以下のように設定した．
+FQDNの冒頭4文字は毎リクエストごとに異なることを踏まえ，ワイルドカードDNSレコードを使用して，DNSサーバ(ns.bancodobrasil.dev)のゾーン情報を表3のように設定した．
 なお，TXTレコードの値には適当な16進数の文字列"68656c6c6f"（hello）を設定した．
 
-  \begin{table}[H]
-    \centering
-    \begin{tabular}{|l|l|l|l|}
-    \hline
-    hostname                                                                                                             & class & type & value                 \\ \hline
-    bancodobrasil.dev.                                                                                                   & IN    & NS   & ns.bancodobrasil.dev. \\ \hline
-    ns.bancodobrasil.dev.                                                                                                & IN    & A    & 127.0.0.1             \\ \hline
-    \begin{tabular}[c]{@{}l@{}}*.642d50432d6934343046\\ 582d504949582d3139393\\ 62900.git.bancodobrasil.dev\end{tabular} & IN    & TXT  & "68656c6c6f"          \\ \hline
-    \end{tabular}
-  \end{table}
+\begin{table}[H]
+  \centering
+  \caption{DNSサーバ　ゾーン情報}
+  \label{table: ゾーン情報}
+  \begin{tabular}{|l|l|l|l|}
+  \hline
+  hostname                                                                                                             & class & type & value                                                            \\ \hline
+  bancodobrasil.dev.                                                                                                   & IN    & NS   & \begin{tabular}[c]{@{}l@{}}ns.bancodo\\ brasil.dev.\end{tabular} \\ \hline
+  ns.bancodobrasil.dev.                                                                                                & IN    & A    & 127.0.0.1                                                        \\ \hline
+  \begin{tabular}[c]{@{}l@{}}*.642d50432d6934343046\\ 582d504949582d3139393\\ 62900.git.bancodobrasil.dev\end{tabular} & IN    & TXT  & "68656c6c6f"                                                     \\ \hline
+  \end{tabular}
+\end{table}
 
   実行結果は図3のようになった．DNSのTXTレコード要求に応じることができたが，正しい値で応答していないため，"Tried to access a non-existent session（controller\_data\_incoming）"
   というエラーメッセージが出力され，タイムアウトによりマルウェアの実行が停止した．
@@ -206,7 +208,7 @@ FQDNの冒頭4文字は毎リクエストごとに異なることを踏まえ，
 \subsection{考察}
 No.3の検体は実行とともにDNSのTXTレコード要求を攻撃者のC2サーバに送信し，その出力やパケットが隠蔽されている様子は確認できなかった．
 これらの特徴は，Symbioteの調査レポートにおける，緊急アクセス機能の特徴と一致する．よって，このマルウェアの通常プロセスは機能していない可能性が高い．
-また，DNSのTXTレコード要求に対しての応答には，攻撃者の署名が必要ということになり，これ以上の実行は困難であると考えられる．\\
+  また，DNSのTXTレコード要求に対しての応答には，攻撃者の署名が必要ということになり，これ以上の実行は困難であると考えられる．\\
 
 \section{おわりに}
 LD\_PRELOADを利用することで，共有ライブラリの置き換えを行うLinuxマルウェアである

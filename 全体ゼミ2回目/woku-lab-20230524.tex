@@ -267,17 +267,24 @@ check\_proc，hidden\_proc，hidden\_fileは，readdirと同様に検体1によ�
 もう一方は隠蔽されるファイルが1つのみ存在するディレクトリに対して，それぞれlsコマンドを実行した．\\
 \indent
 これらのシステムコールを比較したところ，
-どちらもシステムコールの合計呼出し数は102回で，順序や種類も全く同じであった．
+どちらもシステムコールの合計呼出し数は102回で，順序や種類も同じであった．
 また，ファイルの隠蔽に直接関係するようなシステムコールも確認できなかった．
 
 \subsection{ライブラリコールトレースの結果}
-検体1をLD\_PRELOADに設定した状態で，ディレクトリのエントリを読み込むのみのプログラム(readdir.c)を実行し，
-ltraceコマンドでライブラリコールを取得した．
+検体1をLD\_PRELOADに設定した状態で，ディレクトリのエントリを読み込むだけのプログラムtest-readdir.cを実行し，
+ltraceコマンドで動的リンクされる関数を取得した\lbrack 図\ref{fig:ltrace}\rbrack．
+
+\begin{figure}[H]
+	\centering
+  \fbox{\includegraphics[width=8cm]{fig/readdir.eps}}
+	\caption{test-readdir.cに動的リンクされる関数}
+	\label{fig:readdir}
+\end{figure}
 
 \begin{figure}[H]
 	\centering
   \fbox{\includegraphics[width=8cm]{fig/ltrace.eps}}
-	\caption{実行結果（DNS応答なし）}
+	\caption{test-readdir.cに動的リンクされる関数}
 	\label{fig:ltrace}
 \end{figure}
 

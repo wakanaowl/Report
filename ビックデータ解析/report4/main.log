@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.141592653-p4.0.0-220214-2.6 (utf8.euc) (TeX Live 2022) (preloaded format=platex 2022.5.16)  22 JAN 2023 17:55
+This is e-pTeX, Version 3.141592653-p4.0.0-220214-2.6 (utf8.euc) (TeX Live 2022) (preloaded format=platex 2022.5.16)  23 JAN 2023 04:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -127,13 +127,13 @@ Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
 )
 \ltj@lst@frame@lslimit=\dimen173
 \lst@inputfile=\read3
-) (/usr/local/texlive/2022basic/texmf-dist/tex/platex/mysty/itembkbx.sty
+) (./itembkbx.sty
 Package: itembkbx 2007/06/10 v 0.21β
-(/usr/local/texlive/2022basic/texmf-dist/tex/platex/mysty/eclbkbox.sty
+(./eclbkbox.sty
 \bk@bxb=\box81
 \bk@bxa=\box82
 \bk@lcnt=\count269
-) (/usr/local/texlive/2022basic/texmf-dist/tex/platex/mysty/itembbox.sty
+) (./itembbox.sty
 Package: itembbox 2006/07/19 v 0.20
 \iboxpos@=\toks24
 \sc@itemb@x=\box83
@@ -145,7 +145,7 @@ Package: itembbox 2006/07/19 v 0.20
 \dblboxsep=\dimen178
 ) (/usr/local/texlive/2022basic/texmf-dist/tex/platex/mysty/jquote.sty
 Package: jquote 2009/10/21 v0.11
-) (/usr/local/texlive/2022basic/texmf-dist/tex/platex/mysty/emathC.sty
+) (./emathC.sty
 Package: emathC 2010/07/03 v0.74
 (/usr/local/texlive/2022basic/texmf-dist/tex/latex/tools/calc.sty
 Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
@@ -225,17 +225,13 @@ LaTeX Info: Redefining \] on input line 2939.
 ) (/usr/local/texlive/2022basic/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip17
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
-) (/usr/local/texlive/2022basic/texmf-dist/tex/platex/mysty/here.sty) (/usr/local/texlive/2022basic/texmf-dist/tex/latex/float/float.sty
+) (./here.sty) (/usr/local/texlive/2022basic/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \c@float@type=\count286
 \float@exts=\toks31
 \float@box=\box87
 \@float@everytoks=\toks32
 \@floatcapt=\box88
-) (/usr/local/texlive/2022basic/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2020/03/24 1.8d listings language file
-) (/usr/local/texlive/2022basic/texmf-dist/tex/latex/listings/lstmisc.sty
-File: lstmisc.sty 2020/03/24 1.8d (Carsten Heinz)
 ) (/usr/local/texlive/2022basic/texmf-dist/tex/latex/l3backend/l3backend-dvipdfmx.def
 File: l3backend-dvipdfmx.def 2022-04-20 L3 backend support: dvipdfmx
 \g__graphics_track_int=\count287
@@ -246,58 +242,72 @@ File: l3backend-dvipdfmx.def 2022-04-20 L3 backend support: dvipdfmx
 ) (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
-LaTeX Font Info:    Checking defaults for JY1/mc/m/n on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
-LaTeX Font Info:    Checking defaults for JT1/mc/m/n on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for JY1/mc/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for JT1/mc/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
 \c@lstlisting=\count291
 LaTeX Font Info:    Font shape `JT1/mc/m/n' will be
-(Font)              scaled to size 16.60605pt on input line 53.
+(Font)              scaled to size 16.60605pt on input line 51.
 LaTeX Font Info:    Font shape `JY1/mc/m/n' will be
-(Font)              scaled to size 16.60605pt on input line 53.
+(Font)              scaled to size 16.60605pt on input line 51.
 LaTeX Font Info:    Font shape `JT1/mc/m/n' will be
-(Font)              scaled to size 11.53198pt on input line 53.
+(Font)              scaled to size 11.53198pt on input line 51.
 LaTeX Font Info:    Font shape `JY1/mc/m/n' will be
-(Font)              scaled to size 11.53198pt on input line 53.
+(Font)              scaled to size 11.53198pt on input line 51.
 LaTeX Font Info:    Font shape `JY1/mc/m/n' will be
-(Font)              scaled to size 5.76599pt on input line 53.
+(Font)              scaled to size 5.76599pt on input line 51.
 [1
 
 ]
 LaTeX Font Info:    Font shape `JT1/mc/m/n' will be
-(Font)              scaled to size 13.83836pt on input line 55.
+(Font)              scaled to size 13.83836pt on input line 53.
 LaTeX Font Info:    Font shape `JY1/mc/m/n' will be
-(Font)              scaled to size 13.83836pt on input line 55.
+(Font)              scaled to size 13.83836pt on input line 53.
 LaTeX Font Info:    Font shape `JT1/gt/m/n' will be
-(Font)              scaled to size 13.83836pt on input line 55.
+(Font)              scaled to size 13.83836pt on input line 53.
 LaTeX Font Info:    Font shape `JY1/gt/m/n' will be
-(Font)              scaled to size 13.83836pt on input line 55.
+(Font)              scaled to size 13.83836pt on input line 53.
+LaTeX Font Info:    Font shape `JT1/gt/m/n' will be
+(Font)              scaled to size 11.53198pt on input line 59.
+LaTeX Font Info:    Font shape `JY1/gt/m/n' will be
+(Font)              scaled to size 11.53198pt on input line 59.
+File: CPA.png Graphic file (type bmp)
+<CPA.png>
+LaTeX Font Info:    Font shape `JT1/mc/m/n' will be
+(Font)              scaled to size 8.64899pt on input line 64.
 LaTeX Font Info:    Font shape `JY1/mc/m/n' will be
-(Font)              scaled to size 6.72699pt on input line 55.
+(Font)              scaled to size 8.64899pt on input line 64.
+File: ccr.png Graphic file (type bmp)
+<ccr.png>
 LaTeX Font Info:    Font shape `JY1/mc/m/n' will be
-(Font)              scaled to size 4.805pt on input line 56.
-[1] [2] (./main.aux) ) 
-Here is how much of TeX's memory you used:
- 5147 strings out of 479993
- 74722 string characters out of 5884089
- 593343 words of memory out of 5000000
- 23417 multiletter control sequences out of 15000+600000
- 480795 words of font info for 81 fonts, out of 8000000 for 9000
- 112 hyphenation exceptions out of 8191
- 55i,18n,62p,816b,262s stack positions out of 10000i,1000n,20000p,200000b,200000s
-
-Output written on main.dvi (3 pages, 4600 bytes).
+(Font)              scaled to size 6.72699pt on input line 79.
+LaTeX Font Info:    Font shape `JY1/mc/m/n' will be
+(Font)              scaled to size 4.805pt on input line 79.
+[1]
+LaTeX Font Info:    Font shape `JT1/gt/m/n' will be
+(Font)              scaled to size 9.60999pt on input line 92.
+LaTeX Font Info:    Font shape `JY1/gt/m/n' will be
+(Font)              scaled to size 9.60999pt on input line 92.
+LaTeX Font Info:    Font shape `JT1/mc/m/n' will be
+(Font)              scaled to size 6.72699pt on input line 1.
+LaTeX Font Info:    Font shape `JT1/gt/m/n' will be
+(Font)              scaled to size 8.64899pt on input line 1.
+LaTeX Font Info:    Font shape `JY1/gt/m/n' will be
+(Font)              scaled to size 8.64899pt on input line 1.
+[2] [3] [4] (./main.aux) )
+Output written on main.dvi (5 pages, 12936 bytes).

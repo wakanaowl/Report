@@ -1,0 +1,18 @@
+\begin{thebibliography}{1}
+
+\bibitem{TREND-MICRO}
+{TRENDMICRO}: 2021年上半期
+  Linux脅威レポート，\url{https://resources.trendmicro.com/jp-docdownload-form-m414-web-2021h1-linux-threats.html}
+  (2021).
+
+\bibitem{Symbiote}
+{Joakim, K. and The BlackBerry Research \& Intelligence Team }: Symbiote: A
+  New, Nearly-Impossible-to-Detect Linux Threat,
+  \url{https://blogs.blackberry.com/en/2022/06/symbiote-a-new-nearly-impossible-to-detect-linux-threat}
+  (2022).
+
+\bibitem{MITRE-ATT&CK}
+{MITRE ATT\&CK}: Hijack Execution Flow: Dynamic Linker Hijacking,
+  \url{https://attack.mitre.org/techniques/T1574/006/} (2023).
+
+\end{thebibliography}

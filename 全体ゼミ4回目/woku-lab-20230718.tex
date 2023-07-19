@@ -39,7 +39,7 @@
   2021年に発見されたマルウェアSymbioteは，一般的に見られるLinuxマルウェアと比較して，極めて検出が困難とされる．
   SymbioteはLD\_PRELOADを使用して，すべての実行中のプロセスにロードされる共有ライブラリとして動作し，
   正当なプロセスの下で自身や他のマルウェアの痕跡を隠蔽する．
-  本研究では，Symbioteのような，共有ライブラリを用いた攻撃を行うマルウェアを動的解析し，その挙動を明らかにするとともに，効果的な検知手法の発見を目指す．
+  本研究では，Symbioteのような共有ライブラリを用いた攻撃を行うマルウェアを動的解析し，その挙動を明らかにするとともに，効果的な検知手法の発見を目指す．
   はじめに，Symbioteを静的解析することで，エクスポートされるライブラリ関数の役割や隠蔽されるファイル名・プロセス名を特定した．
   前回から今回では，Symbioteのライブラリ関数を使用するプログラムを実行したときの実行結果とシステムコールの差分を収集する．
 \end{abstract}
@@ -129,8 +129,8 @@ RC4でコンテンツを復号して，生成されたbashプロセスでシェ�
 Symbioteの共有ライブラリはELFファイルであるため，readelfコマンドを用いてライブラリ関数のシンボル情報を
 取得できる．表2は，Symbioteの5つの共有ライブラリについて，エクスポートされるライブラリ関数の一覧を示す．丸がついているライブラリ関数は，その検体からエクスポートされることを表している．
 検体間でエクスポートされるライブラリ関数がほとんど共通していることから，それぞれの共有ライブラリは，バージョン違いの検体であると分かる．\\
-動的解析による共有ライブラリの影響調査は，主に最新の検体であるlibpcap.soを使用する．libpcap.soで実装されていないライブラリ関数については，次に新しい検体であるliblinux.soを使用する．
-影響調査を行うライブラリ関数は，最新の検体libpcap.soで実装されている関数を全てと，3つ以上の検体で実装されている関数とする．\\
+動的解析による共有ライブラリの影響調査は，主に最新の検体である検体6を使用する．検体6で実装されていないライブラリ関数については，次に新しい検体5を使用する．
+影響調査は，最新の検体である検体6で実装されている関数を全てと，3つ以上の検体で実装されている関数を合計した16種類の関数について行う．\\
 
 
 \begin{table*}[t]
@@ -193,8 +193,6 @@ Symbioteの共有ライブラリはELFファイルであるため，readelfコ�
 ゲストOSからホストおよびネットワークへのアクセスはできない．
 また，検体の実行と解析は全てゲストOS上で行う．
 
-
-
 \begin{table}[t]
   \caption{解析環境}
   \label{table: 解析環境}
@@ -208,7 +206,127 @@ Symbioteの共有ライブラリはELFファイルであるため，readelfコ�
   \end{tabular}
 \end{table}
 
+\begin{table*}[t]
+  \centering
+  \caption{readdir システムコール}
+  \label{table: readdir}
+  \begin{tabular}{|lll|lll|lll|}
+  \hline
+  \multicolumn{3}{|l|}{Symbioteなし}                                              & \multicolumn{3}{l|}{Symbioteあり}                                              & \multicolumn{3}{l|}{Symbioteあり（条件を満たさない）}                                    \\ \hline
+  \multicolumn{1}{|l|}{calls} & \multicolumn{1}{l|}{errors} & syscall           & \multicolumn{1}{l|}{calls} & \multicolumn{1}{l|}{errors} & syscall           & \multicolumn{1}{l|}{calls} & \multicolumn{1}{l|}{errors} & syscall           \\ \hline
+  \multicolumn{1}{|l|}{2}     & \multicolumn{1}{l|}{2}      & access            & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{2}      & access            & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{2}      & access            \\
+  \multicolumn{1}{|l|}{2}     & \multicolumn{1}{l|}{1}      & arch\_prctl       & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{1}      & arch\_prctl       & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{1}      & arch\_prctl       \\
+  \multicolumn{1}{|l|}{3}     & \multicolumn{1}{l|}{}       & brk               & \multicolumn{1}{l|}{3}     & \multicolumn{1}{l|}{}       & brk               & \multicolumn{1}{l|}{3}     & \multicolumn{1}{l|}{}       & brk               \\
+  \multicolumn{1}{|l|}{9}     & \multicolumn{1}{l|}{}       & close             & \multicolumn{1}{l|}{11}    & \multicolumn{1}{l|}{}       & close             & \multicolumn{1}{l|}{11}    & \multicolumn{1}{l|}{}       & close             \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & execve            & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & execve            & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & execve            \\
+  \multicolumn{1}{|l|}{2}     & \multicolumn{1}{l|}{}       & getdents64        & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{}       & getdents64        & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{}       & getdents64        \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & getrandom         & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & getrandom         & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & getrandom         \\
+  \multicolumn{1}{|l|}{2}     & \multicolumn{1}{l|}{}       & ioctl             & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{}       & ioctl             & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{}       & ioctl             \\
+  \multicolumn{1}{|l|}{18}    & \multicolumn{1}{l|}{}       & mmap              & \multicolumn{1}{l|}{26}    & \multicolumn{1}{l|}{}       & mmap              & \multicolumn{1}{l|}{26}    & \multicolumn{1}{l|}{}       & mmap              \\
+  \multicolumn{1}{|l|}{6}     & \multicolumn{1}{l|}{}       & mprotect          & \multicolumn{1}{l|}{9}     & \multicolumn{1}{l|}{}       & mprotect          & \multicolumn{1}{l|}{9}     & \multicolumn{1}{l|}{}       & mprotect          \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & munmap            & \multicolumn{1}{l|}{3}     & \multicolumn{1}{l|}{}       & munmap            & \multicolumn{1}{l|}{3}     & \multicolumn{1}{l|}{}       & munmap            \\
+  \multicolumn{1}{|l|}{8}     & \multicolumn{1}{l|}{}       & newfstatat        & \multicolumn{1}{l|}{10}    & \multicolumn{1}{l|}{}       & newfstatat        & \multicolumn{1}{l|}{10}    & \multicolumn{1}{l|}{}       & newfstatat        \\
+  \multicolumn{1}{|l|}{7}     & \multicolumn{1}{l|}{}       & openat            & \multicolumn{1}{l|}{9}     & \multicolumn{1}{l|}{}       & openat            & \multicolumn{1}{l|}{9}     & \multicolumn{1}{l|}{}       & openat            \\
+  \multicolumn{1}{|l|}{4}     & \multicolumn{1}{l|}{}       & pread64           & \multicolumn{1}{l|}{4}     & \multicolumn{1}{l|}{}       & pread64           & \multicolumn{1}{l|}{4}     & \multicolumn{1}{l|}{}       & pread64           \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & prlimit64         & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & prlimit64         & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & prlimit64         \\
+  \multicolumn{1}{|l|}{5}     & \multicolumn{1}{l|}{}       & read              & \multicolumn{1}{l|}{7}     & \multicolumn{1}{l|}{}       & read              & \multicolumn{1}{l|}{7}     & \multicolumn{1}{l|}{}       & read              \\
+  \multicolumn{1}{|l|}{}      & \multicolumn{1}{l|}{}       &                   & \multicolumn{1}{l|}{6}     & \multicolumn{1}{l|}{}       & readlink          & \multicolumn{1}{l|}{6}     & \multicolumn{1}{l|}{}       & readlink          \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & rseq              & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & rseq              & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & rseq              \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & set\_robust\_list & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & set\_robust\_list & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & set\_robust\_list \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & set\_tid\_address & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & set\_tid\_address & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & set\_tid\_address \\
+  \multicolumn{1}{|l|}{2}     & \multicolumn{1}{l|}{2}      & statfs            & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{2}      & statfs            & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{2}      & statfs            \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & statx             & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & statx             & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & statx             \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & write             & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & write             & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & write             \\ \hline
+  \multicolumn{1}{|l|}{79}    & \multicolumn{1}{l|}{5}      &                   & \multicolumn{1}{l|}{106}   & \multicolumn{1}{l|}{5}      &                   & \multicolumn{1}{l|}{106}   & \multicolumn{1}{l|}{5}      &                   \\ \hline
+  \end{tabular}
+  \end{table*}
 
+\begin{table*}[t]
+  \centering
+  \caption{fopen システムコール}
+  \label{table: fopen}
+  \begin{tabular}{|lll|lll|lll|}
+  \hline
+  \multicolumn{3}{|l|}{Symbioteなし}                                              & \multicolumn{3}{l|}{Symbioteあり（条件を満たさない）}                                    & \multicolumn{3}{l|}{Symbioteあり（条件を満たす）}                                      \\ \hline
+  \multicolumn{1}{|l|}{calls} & \multicolumn{1}{l|}{errors} & syscall           & \multicolumn{1}{l|}{calls} & \multicolumn{1}{l|}{errors} & syscall           & \multicolumn{1}{l|}{calls} & \multicolumn{1}{l|}{errors} & syscall           \\ \hline
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{1}      & access            & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{1}      & access            & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{1}      & access            \\
+  \multicolumn{1}{|l|}{2}     & \multicolumn{1}{l|}{1}      & arch\_prctl       & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{1}      & arch\_prctl       & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{1}      & arch\_prctl       \\
+  \multicolumn{1}{|l|}{3}     & \multicolumn{1}{l|}{}       & brk               & \multicolumn{1}{l|}{3}     & \multicolumn{1}{l|}{}       & brk               & \multicolumn{1}{l|}{3}     & \multicolumn{1}{l|}{}       & brk               \\
+  \multicolumn{1}{|l|}{3}     & \multicolumn{1}{l|}{}       & close             & \multicolumn{1}{l|}{3}     & \multicolumn{1}{l|}{}       & close             & \multicolumn{1}{l|}{6}     & \multicolumn{1}{l|}{}       & close             \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & execve            & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & execve            & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & execve            \\
+  \multicolumn{1}{|l|}{}      & \multicolumn{1}{l|}{}       &                   & \multicolumn{1}{l|}{}      & \multicolumn{1}{l|}{}       &                   & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & fcntl             \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & getrandom         & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & getrandom         & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & getrandom         \\
+  \multicolumn{1}{|l|}{}      & \multicolumn{1}{l|}{}       &                   & \multicolumn{1}{l|}{}      & \multicolumn{1}{l|}{}       &                   & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & lseek             \\
+  \multicolumn{1}{|l|}{8}     & \multicolumn{1}{l|}{}       & mmap              & \multicolumn{1}{l|}{8}     & \multicolumn{1}{l|}{}       & mmap              & \multicolumn{1}{l|}{16}    & \multicolumn{1}{l|}{}       & mmap              \\
+  \multicolumn{1}{|l|}{3}     & \multicolumn{1}{l|}{}       & mprotect          & \multicolumn{1}{l|}{3}     & \multicolumn{1}{l|}{}       & mprotect          & \multicolumn{1}{l|}{6}     & \multicolumn{1}{l|}{}       & mprotect          \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & munmap            & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & munmap            & \multicolumn{1}{l|}{3}     & \multicolumn{1}{l|}{}       & munmap            \\
+  \multicolumn{1}{|l|}{4}     & \multicolumn{1}{l|}{}       & newfstatat        & \multicolumn{1}{l|}{4}     & \multicolumn{1}{l|}{}       & newfstatat        & \multicolumn{1}{l|}{7}     & \multicolumn{1}{l|}{}       & newfstatat        \\
+  \multicolumn{1}{|l|}{3}     & \multicolumn{1}{l|}{}       & openat            & \multicolumn{1}{l|}{3}     & \multicolumn{1}{l|}{}       & openat            & \multicolumn{1}{l|}{6}     & \multicolumn{1}{l|}{}       & openat            \\
+  \multicolumn{1}{|l|}{4}     & \multicolumn{1}{l|}{}       & pread64           & \multicolumn{1}{l|}{4}     & \multicolumn{1}{l|}{}       & pread64           & \multicolumn{1}{l|}{4}     & \multicolumn{1}{l|}{}       & pread64           \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & prlimit64         & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & prlimit64         & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & prlimit64         \\
+  \multicolumn{1}{|l|}{4}     & \multicolumn{1}{l|}{}       & read              & \multicolumn{1}{l|}{3}     & \multicolumn{1}{l|}{}       & read              & \multicolumn{1}{l|}{8}     & \multicolumn{1}{l|}{}       & read              \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & rseq              & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & rseq              & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & rseq              \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & set\_robust\_list & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & set\_robust\_list & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & set\_robust\_list \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & set\_tid\_address & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & set\_tid\_address & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & set\_tid\_address \\
+  \multicolumn{1}{|l|}{9}     & \multicolumn{1}{l|}{}       & write             & \multicolumn{1}{l|}{6}     & \multicolumn{1}{l|}{}       & write             & \multicolumn{1}{l|}{7}     & \multicolumn{1}{l|}{}       & write             \\ \hline
+  \multicolumn{1}{|l|}{51}    & \multicolumn{1}{l|}{2}      & total             & \multicolumn{1}{l|}{47}    & \multicolumn{1}{l|}{2}      & total             & \multicolumn{1}{l|}{77}    & \multicolumn{1}{l|}{2}      & total             \\ \hline
+  \end{tabular}
+  \end{table*}
+
+\begin{table*}[t]
+  \centering
+  \caption{pam\_acct\_mgmt システムコール}
+  \label{table: pam}
+  \begin{tabular}{|lllllllll|}
+  \hline
+  \multicolumn{3}{|l|}{Symbioteなし}                                                                   & \multicolumn{3}{l|}{Symbioteあり（条件を満たさない）}                                                         & \multicolumn{3}{l|}{Symbioteあり（条件を満たす）}                                      \\ \hline
+  \multicolumn{1}{|l|}{calls} & \multicolumn{1}{l|}{errors} & \multicolumn{1}{l|}{syscall}           & \multicolumn{1}{l|}{calls} & \multicolumn{1}{l|}{errors} & \multicolumn{1}{l|}{syscall}           & \multicolumn{1}{l|}{calls} & \multicolumn{1}{l|}{errors} & syscall           \\ \hline
+  \multicolumn{1}{|l|}{2}     & \multicolumn{1}{l|}{2}      & \multicolumn{1}{l|}{access}            & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{2}      & \multicolumn{1}{l|}{access}            & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{2}      & access            \\
+  \multicolumn{1}{|l|}{2}     & \multicolumn{1}{l|}{1}      & \multicolumn{1}{l|}{arch\_prctl}       & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{1}      & \multicolumn{1}{l|}{arch\_prctl}       & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{1}      & arch\_prctl       \\
+  \multicolumn{1}{|l|}{3}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{brk}               & \multicolumn{1}{l|}{3}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{brk}               & \multicolumn{1}{l|}{3}     & \multicolumn{1}{l|}{}       & brk               \\
+  \multicolumn{1}{|l|}{2}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{capget}            & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{capget}            & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{}       & capget            \\
+  \multicolumn{1}{|l|}{77}    & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{close}             & \multicolumn{1}{l|}{79}    & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{close}             & \multicolumn{1}{l|}{48}    & \multicolumn{1}{l|}{}       & close             \\
+  \multicolumn{1}{|l|}{4}     & \multicolumn{1}{l|}{2}      & \multicolumn{1}{l|}{connect}           & \multicolumn{1}{l|}{4}     & \multicolumn{1}{l|}{2}      & \multicolumn{1}{l|}{connect}           & \multicolumn{1}{l|}{}      & \multicolumn{1}{l|}{}       &                   \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{epoll\_create1}    & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{epoll\_create1}    & \multicolumn{1}{l|}{}      & \multicolumn{1}{l|}{}       &                   \\
+  \multicolumn{1}{|l|}{6}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{epoll\_ctl}        & \multicolumn{1}{l|}{6}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{epoll\_ctl}        & \multicolumn{1}{l|}{}      & \multicolumn{1}{l|}{}       &                   \\
+  \multicolumn{1}{|l|}{4}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{epoll\_wait}       & \multicolumn{1}{l|}{4}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{epoll\_wait}       & \multicolumn{1}{l|}{}      & \multicolumn{1}{l|}{}       &                   \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{execve}            & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{execve}            & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & execve            \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{fcntl}             & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{fcntl}             & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & fcntl             \\
+  \multicolumn{1}{|l|}{2}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{futex}             & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{futex}             & \multicolumn{1}{l|}{}      & \multicolumn{1}{l|}{}       &                   \\
+  \multicolumn{1}{|l|}{2}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{getdents64}        & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{getdents64}        & \multicolumn{1}{l|}{}      & \multicolumn{1}{l|}{}       &                   \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{getpid}            & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{getpid}            & \multicolumn{1}{l|}{}      & \multicolumn{1}{l|}{}       &                   \\
+  \multicolumn{1}{|l|}{2}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{getrandom}         & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{getrandom}         & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & getrandom         \\
+  \multicolumn{1}{|l|}{2}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{gettid}            & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{gettid}            & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & gettid            \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{getuid}            & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{getuid}            & \multicolumn{1}{l|}{}      & \multicolumn{1}{l|}{}       &                   \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{ioctl}             & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{ioctl}             & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & ioctl             \\
+  \multicolumn{1}{|l|}{2}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{lseek}             & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{lseek}             & \multicolumn{1}{l|}{}      & \multicolumn{1}{l|}{}       &                   \\
+  \multicolumn{1}{|l|}{143}   & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{mmap}              & \multicolumn{1}{l|}{152}   & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{mmap}              & \multicolumn{1}{l|}{146}   & \multicolumn{1}{l|}{}       & mmap              \\
+  \multicolumn{1}{|l|}{43}    & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{mprotect}          & \multicolumn{1}{l|}{46}    & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{mprotect}          & \multicolumn{1}{l|}{45}    & \multicolumn{1}{l|}{}       & mprotect          \\
+  \multicolumn{1}{|l|}{33}    & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{munmap}            & \multicolumn{1}{l|}{35}    & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{munmap}            & \multicolumn{1}{l|}{33}    & \multicolumn{1}{l|}{}       & munmap            \\
+  \multicolumn{1}{|l|}{77}    & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{newfstatat}        & \multicolumn{1}{l|}{79}    & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{newfstatat}        & \multicolumn{1}{l|}{57}    & \multicolumn{1}{l|}{}       & newfstatat        \\
+  \multicolumn{1}{|l|}{82}    & \multicolumn{1}{l|}{12}     & \multicolumn{1}{l|}{openat}            & \multicolumn{1}{l|}{84}    & \multicolumn{1}{l|}{12}     & \multicolumn{1}{l|}{openat}            & \multicolumn{1}{l|}{47}    & \multicolumn{1}{l|}{}       & openat            \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{poll}              & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{poll}              & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & poll              \\
+  \multicolumn{1}{|l|}{6}     & \multicolumn{1}{l|}{4}      & \multicolumn{1}{l|}{prctl}             & \multicolumn{1}{l|}{6}     & \multicolumn{1}{l|}{4}      & \multicolumn{1}{l|}{prctl}             & \multicolumn{1}{l|}{6}     & \multicolumn{1}{l|}{4}      & prctl             \\
+  \multicolumn{1}{|l|}{4}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{pread64}           & \multicolumn{1}{l|}{4}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{pread64}           & \multicolumn{1}{l|}{4}     & \multicolumn{1}{l|}{}       & pread64           \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{prlimit64}         & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{prlimit64}         & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & prlimit64         \\
+  \multicolumn{1}{|l|}{63}    & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{read}              & \multicolumn{1}{l|}{65}    & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{read}              & \multicolumn{1}{l|}{53}    & \multicolumn{1}{l|}{}       & read              \\
+  \multicolumn{1}{|l|}{2}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{readlink}          & \multicolumn{1}{l|}{7}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{readlink}          & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{}       & readlink          \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{readlinkat}        & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{readlinkat}        & \multicolumn{1}{l|}{}      & \multicolumn{1}{l|}{}       &                   \\
+  \multicolumn{1}{|l|}{3}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{recvfrom}          & \multicolumn{1}{l|}{3}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{recvfrom}          & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{}       & recvfrom          \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{rseq}              & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{rseq}              & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & rseq              \\
+  \multicolumn{1}{|l|}{2}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{rt\_sigprocmask}   & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{rt\_sigprocmask}   & \multicolumn{1}{l|}{}      & \multicolumn{1}{l|}{}       &                   \\
+  \multicolumn{1}{|l|}{3}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{sendto}            & \multicolumn{1}{l|}{3}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{sendto}            & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & sendto            \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{set\_robust\_list} & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{set\_robust\_list} & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & set\_robust\_list \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{set\_tid\_address} & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{set\_tid\_address} & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & set\_tid\_address \\
+  \multicolumn{1}{|l|}{5}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{socket}            & \multicolumn{1}{l|}{5}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{socket}            & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & socket            \\
+  \multicolumn{1}{|l|}{2}     & \multicolumn{1}{l|}{2}      & \multicolumn{1}{l|}{statfs}            & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{2}      & \multicolumn{1}{l|}{statfs}            & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{2}      & statfs            \\
+  \multicolumn{1}{|l|}{2}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{timerfd\_create}   & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{timerfd\_create}   & \multicolumn{1}{l|}{}      & \multicolumn{1}{l|}{}       &                   \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{timerfd\_settime}  & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{timerfd\_settime}  & \multicolumn{1}{l|}{}      & \multicolumn{1}{l|}{}       &                   \\
+  \multicolumn{1}{|l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{uname}             & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{uname}             & \multicolumn{1}{l|}{1}     & \multicolumn{1}{l|}{}       & uname             \\
+  \multicolumn{1}{|l|}{7}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{write}             & \multicolumn{1}{l|}{7}     & \multicolumn{1}{l|}{}       & \multicolumn{1}{l|}{write}             & \multicolumn{1}{l|}{7}     & \multicolumn{1}{l|}{}       & write             \\ \hline
+  \multicolumn{1}{|l|}{601}   & \multicolumn{1}{l|}{23}     & \multicolumn{1}{l|}{total}             & \multicolumn{1}{l|}{628}   & \multicolumn{1}{l|}{23}     & \multicolumn{1}{l|}{total}             & \multicolumn{1}{l|}{474}   & \multicolumn{1}{l|}{9}      & total             \\ \hline
+  \end{tabular}
+  \end{table*}
 
 \subsection{readdir}
 \subsubsection{出力結果}
@@ -241,6 +359,7 @@ lsコマンドは内部でreaddirを呼び出す．Symbioteの共有ライブラ
 	\caption{check\_proc}
 	\label{fig:readdir}
 \end{figure}
+
 
 \subsubsection{システムコールトレース}
 4.2.1節と同じ条件において，ls -aコマンドを実行したときのシステムコールをstraceで観測する．\\

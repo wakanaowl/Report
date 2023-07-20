@@ -184,9 +184,6 @@ Symbioteの共有ライブラリはELFファイルであるため，readelfコ�
 \section{ライブラリ関数ごとの特徴の収集}
 検体を隔離環境で実行し，それぞれのライブラリ関数に対して，それを利用するプログ
 ラムを実行したときの出力結果とシステムコールの差分を収集する．
-注意する点として，Symbioteのライブラリ関数は，実行されたときの条件による処理の変化によって，3つの種類に分けられる．条件によって，置き換えられた元のライブラリ関数をそのまま呼び出すのみの場合と．Symbioteの独自の処理を追加する場合，条件に関わらず，独自の処理を行う場合である．
-ここでは，実行時の条件によって，処理が変化するものと，変化しないもので，ライブラリ関数を区別する．また，変化するものに関しては，Symbioteが独自の処理を行う場合を，条件を満たす場合とし，そうでない場合を条件を満たさない場合とする．\\
-\indent
 4.1節で解析環境について説明し，4.2節で，Symbioteのライブラリ関数の分類と，独自の処理を行う条件を示す．4.3章で，それらの条件ごとに，出力結果とシステムコールの差分を示す．
 
 \subsection{解析環境}
@@ -207,13 +204,53 @@ Symbioteの共有ライブラリはELFファイルであるため，readelfコ�
   \end{tabular}
 \end{table}
 
+\subsection{Symbioteの処理が行われる条件}
+ソースコードの静的解析により，Symbioteのライブラリ関数は，実行されたときの条件によって，処理の内容が変化するものとしないものがあると分かった．
+また，実行時の条件によって処理の内容が変化するものには，条件によって，置き換えられた元のライブラリ関数をそのまま呼び出すだけの場合と，Symbioteの独自の処理を追加する場合があった．
+Symbioteが独自の処理を行う場合を，条件を満たす場合とし，そうでない場合を条件を満たさない場合とする．動的解析を行う16種類のライブラリ関数について，条件を表4にまとめた．条件がなしとは，条件に関わらずSymbioteの独自の処理を行うライブラリ関数を表す．
+\indent
+
+\begin{table*}[t]
+  \caption{ Symbioteの処理が行われる条件一覧}
+  \label{table: 条件}
+  \centering
+  \begin{tabular}{|c|c|}
+  \hline
+  ライブラリ関数           & 条件\\ \hline
+  \_fini            &  なし\\ \hline
+  \_init            & なし\\ \hline
+  fopen，fopen64     & /proc/net/tcpを開く \\ \hline
+  readdir，readdir64 &  なし\\ \hline
+  fstatat，fstatat64 &   \begin{tabular}[c]{@{}l@{}}引数に渡されたファイルディスクリプタの値が-100かつ，\\ /proc/\textless pid\textgreater /cmdlineまたは/proc/\textless pid\textgreater /statusのファイル内に特定のプロセス名が含まれる\end{tabular}\\\hline
+  pam\_set\_item    & なし \\ \hline
+  pam\_acct\_mgmt   &  pampasswordポインタに特定のパスワードが格納されている\\ \hline
+  pam\_authenticate & pampasswordポインタに特定のパスワードが格納されている \\ \hline
+  recvmsg           & なし   \\ \hline
+  pcap\_stats       & なし\\ \hline
+  pcap\_loop        &  パケットに特定のドメイン名が含まれる\\ \hline
+  setsockopt        &  なし\\ \hline
+  read              & 現在のプロセス/proc/self/exeが，sshまたはscpで起動されている\\ \hline
+  execve            &  環境変数LD\_TRACE\_LOADED\_OBJECTSの値がNULLでない\\ \hline
+  stat              &  /proc/\textless pid\textgreater /cmdlineまたは/proc/\textless pid\textgreater /statusファイル内に特定のプロセス名が含まれる\\ \hline
+  statx             &  \begin{tabular}[c]{@{}l@{}}引数に渡されたファイルディスクリプタの値が-100かつ，\\ /proc/\textless pid\textgreater /cmdlineまたは/proc/\textless pid\textgreater /statusのファイル内に特定のプロセス名が含まれる\end{tabular}\\ \hline
+  \end{tabular}
+  \end{table*}
+
+\subsection{動的解析}
+\subsubsection{実験の概要}
+表4でまとめたライブラリ関数について，条件がなしのものは，Symbioteのライブラリ関数を使用しない場合と使用する場合の2通りについて出力結果とシステムコールの収集を行う．
+条件があるものは，Symbioteのライブラリ関数を使用しない場合は同じように行い，使用する場合は，条件を満たす場合と満たさない場合に分けて，合計3通りについて出力結果とシステムコールの収集を行う．\\
+\indent
+差分の収集には，各ライブラリ関数を内部で使用するコマンドまたは実験用に作成したプログラムを使用する．システムコールトレースはstraceを使用して行い，実験結果のまとめには，strace -cオプションを指定したときのシステムコールの統計情報を利用する．\\
+
+
 \begin{table*}[t]
   \centering
   \caption{readdir システムコール}
   \label{table: readdir}
   \begin{tabular}{|lll|lll|lll|}
   \hline
-  \multicolumn{3}{|l|}{Symbioteなし}                                              & \multicolumn{3}{l|}{Symbioteあり}                                              & \multicolumn{3}{l|}{Symbioteあり（条件を満たさない）}                                    \\ \hline
+  \multicolumn{3}{|l|}{Symbioteなし}                                              & \multicolumn{3}{l|}{Symbioteあり(隠蔽ファイルあり)}                                              & \multicolumn{3}{l|}{Symbioteあり(隠蔽ファイルなし)}                                    \\ \hline
   \multicolumn{1}{|l|}{calls} & \multicolumn{1}{l|}{errors} & syscall           & \multicolumn{1}{l|}{calls} & \multicolumn{1}{l|}{errors} & syscall           & \multicolumn{1}{l|}{calls} & \multicolumn{1}{l|}{errors} & syscall           \\ \hline
   \multicolumn{1}{|l|}{2}     & \multicolumn{1}{l|}{2}      & access            & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{2}      & access            & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{2}      & access            \\
   \multicolumn{1}{|l|}{2}     & \multicolumn{1}{l|}{1}      & arch\_prctl       & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{1}      & arch\_prctl       & \multicolumn{1}{l|}{2}     & \multicolumn{1}{l|}{1}      & arch\_prctl       \\
@@ -329,49 +366,36 @@ Symbioteの共有ライブラリはELFファイルであるため，readelfコ�
   \end{tabular}
   \end{table*}
 
+\subsubsection{出力結果とシステムコールの差分}
+現在，16種類のライブラリ関数について，実行時の条件を考慮して，出力結果とシステムコールの差分をまとめた表を作成している．ここでは，その中からreaddir，fopen，pam\_acct\_mgmtの3つのライブラリ関数を取り上げて説明する．
+
 \subsection{readdir}
 \subsubsection{出力結果}
 lsコマンドは内部でreaddirを呼び出す．Symbioteの共有ライブラリを利用する場合としない場合で，lsコマンドを実行したときの出力結果を観測する．
-今回lsコマンドには/home以下に存在する/testディレクトリのPATHを指定する．/homeの中には/helloディレクトリ，kerneldev.so，send.txt，test.txtが含まれる．
-以下のように，Symbioteを設定せずにlsコマンドを実行したあと，検体1（kerneldev.so）をLD\_PRELOADに設定し，再度lsコマンドを実行した．\\
-\$ ls /home/.../test/\\
-\$ export LD\_PRELOAD=/path/to/kerneldev.so\\
-\$ ls /home/.../test/\\
-出力結果を図2に示す．通常のreaddirが利用される場合と，検体1のreaddirが利用される場合で，lsコマンドの出力に違いがある．
-検体1によって隠蔽されるファイル名と一致しているkerneldev.soは，Symbioteが設定される場合は表示されないことが分かる．\\
-
-\begin{figure*}[t]
-	\centering
-  \includegraphics[width=15cm]{fig/01.eps}
-	\caption{Symbiteなし：ls -aのシステムコール}
-	\label{fig:s-ls}
-\end{figure*}
-
-\begin{figure*}[t]
-	\centering
-  \includegraphics[width=15cm]{fig/02.eps}
-	\caption{Symbiteあり（kerneldev.so）：ls -aのシステムコール}
-	\label{fig:s-ls}
-\end{figure*}
-
-\begin{figure}[t]
-	\centering
-  \includegraphics[width=7cm]{fig/07.eps}
-	\caption{check\_proc}
-	\label{fig:readdir}
-\end{figure}
+今回lsコマンドには/home/以下に存在するtestディレクトリのPATHを指定する．testの中にはhelloディレクトリ，mprfx.so，send.txt，test.txtが含まれる．
+以下のように，Symbioteを設定せずにlsコマンドを実行したあと，検体6（libpcap3.so）をLD\_PRELOADに設定し，再度lsコマンドを実行した．
+検体6によって隠蔽されるファイル名には以下の6つがある．
+\begin{itemize}
+  \item mprfx.so
+  \item .db.inc.php
+  \item ld.so.preload
+  \item libpcap3.so
+  \item kswapd
+  \item certx.h
+\end{itemize}
+出力結果を図2に示す．Symbioteのreaddirが使用されない場合と，使用される場合でlsコマンドの出力に違いがある．
+mprfx.soは，検体6が設定される場合は表示されないことが分かる．\\
 
 
 \subsubsection{システムコールトレース}
-4.2.1節と同じ条件において，ls -aコマンドを実行したときのシステムコールをstraceで観測する．\\
-図3はSymbioteを設定せずにls -aを実行したときのシステムコールの一部，図4はSymbioteを設定してls -aを実行したときのシステムコールの一部である．
-これらを比較すると，図3の赤矢印の位置にはないが，図4の対応する位置にはreadlinkシステムコールが全部で6回呼出されていることが分かる． 
-readlinkは，与えられたシンボリックリンクから実際のPATHを取得するシステムコールである．システムコールに違いが生じた要因として，
-Symbioteによってエクスポートされるreaddirは，内部でcheck\_proc[図5]という関数を呼び出す．check\_procは，指定
-されたディレクトリが/proc内のファイルディスクリプタを指すシンボリックリンクであるかを判定するための関数である．
-この関数内で，シンボリックリンクから，実際のパスを取得するために，readlinkシステムコールが呼ばれている．
-Symbioteが設定されていない場合は，lsコマンドによってreadlinkが呼出されることはないため，特徴的な違いと定義できる可能性がある．\\
+4.2.1節と同じ条件において，lsコマンドを実行したときのシステムコールをstrace -cで観測する．
+readdirは，実行時の条件によって，Symbiteの処理が変化しない．
+これを確認するために，Symbioteありの場合について，隠蔽対象のファイル(mprfx.so)がtestディレクトリ内にある場合とない場合の2通りについて収集を行った．
+結果を表5にまとめる．Symbiteありの場合は，Symbioteなしの場合に比べて，隠蔽ファイルの有無に関わらずreadlinkシステムコールのみが増えた．
+Symbioteありの場合は，処理内容が同じため，システムコールの統計もどちらも全く同じ結果となった．
 
+\subsection{fopen}
+\subsubsection{出力結果}
 
 
 

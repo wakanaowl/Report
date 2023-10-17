@@ -1,0 +1,265 @@
+\documentclass[dvipdfmx,autodetect-engine,titlepage]{jsarticle}
+\usepackage[dvipdfm]{graphicx}
+\usepackage{ascmac}
+\usepackage{fancybox}
+\usepackage{listings}
+\usepackage{plistings}
+\usepackage{itembkbx}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage{graphics}
+\usepackage{listings}
+\usepackage{here}
+
+\lstset{%
+  language={C},
+  basicstyle={\small},%
+  identifierstyle={\small},%
+  commentstyle={\small\itshape\color[rgb]{0,0.5,0}},%
+  keywordstyle={\small\bfseries\color[rgb]{0,0,1}},%
+  ndkeywordstyle={\small},%
+  stringstyle={\small\ttfamily\color[rgb]{1,0,1}},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},%
+  numbers=left,%
+  xrightmargin=0zw,%
+  xleftmargin=3zw,%
+  numberstyle={\scriptsize},%
+  stepnumber=1,
+  numbersep=1zw,%
+  lineskip=-0.5ex%
+}
+
+\textheight=23cm
+\renewcommand{\figurename}{図}
+\renewcommand{\tablename}{表}
+\newenvironment{code}
+{\vspace{0.5zw}\VerbatimEnvironment  \begin{screen} 
+\baselineskip=1.0\normalbaselineskip
+ \begin{Verbatim}}
+{\end{Verbatim}
+\baselineskip=\normalbaselineskip
+ \end{screen}\vspace{0.5zw}} 
+
+\title{情報アクセス論（後半）レポート\\
+}
+\author{セキュリティ・ネットワークコース\\2600200087-2\\Oku Wakana\\奥 若菜}
+\date{Jun.14 2023}
+
+\begin{document}
+
+\maketitle
+
+\section{協調フィルタリング}
+購入者Cの商品4に対する評価値を，協調フィルタリングの方法を用いて算出せよ．
+さらに購入者Cに商品4は推薦すべきか、推薦すべきでないかも回答せよ．\\
+
+まず，購入者間の類似度を，購入者が付与した評価値より計算する．
+利用者間の類似度は相関係数により算出する．購入者Cと購入者Aの相関係数，購入者Cと購入者Bの相関係数をそれぞれ求める．また，
+\begin{math}
+  \overline{A}, \overline{B}, \overline{C}
+\end{math}
+は各購入者の評価値の平均とし，
+\begin{math}
+  \sqrt{3} = 1.73， \sqrt{7} = 2.65 
+\end{math}
+とする．
+
+\begin{eqnarray*}
+  r_{C,A} &=& \frac{\sum_{i} (C_{i} - \overline{C})(A_{i} - \overline{A}) }{\sqrt{\sum_{i} (C_{i} - \overline{C})^2} \sqrt{\sum_{i} (A_{i} - \overline{A})^2}} \\\\
+  &=& \frac{(2-2)(4-\frac{11}{3} ) + (1-2)(5-\frac{11}{3} ) + (3-2)(2-\frac{11}{3} )}{\sqrt{(2-2)^2+(1-2)^2+(3-2)^2} \sqrt{(4-\frac{11}{3} )^2+ (5-\frac{11}{3} )^2 + (2-\frac{11}{3} )^2}} \\\\
+  &=& - \frac{9}{2\sqrt{21}  } \\\\
+  &=& -0.98
+\end{eqnarray*}
+
+\begin{eqnarray*}
+  r_{C,B} &=& \frac{\sum_{i} (C_{i} - \overline{C})(B_{i} - \overline{B}) }{\sqrt{\sum_{i} (C_{i} - \overline{C})^2} \sqrt{\sum_{i} (B_{i} - \overline{B})^2}} \\\\
+  &=& \frac{(2-2)(1-3) + (1-2)(3-3) + (3-2)(5-3)}{\sqrt{(2-2)^2+(1-2)^2+(3-2)^2} \sqrt{(1-3)^2+ (3-3)^2 + (5-3)^2}} \\\\
+  &=&  \frac{1}{2} \\\\
+  &=& 0.50 \\
+\end{eqnarray*}
+
+相関係数より，購入者Cと購入者Aの嗜好は正反対であり，利用者Cと利用者Bの嗜好は少し似ていることが分かる．
+続いて，購入者Cの商品4に対する評価値を算出する．
+
+\begin{eqnarray*}
+  predict(C,4) &=& \overline{C} + \frac{\sum_{J}\epsilon_{User}(J_{4}-\overline{J})r_{C,J}}{\sum_{J}\epsilon_{User}| r_{C,J}\vert } \\\\
+  &=& 2 + \frac{(1-3)(-0.98)+(4-2.60 )0.50}{0.98 + 0.50} \\\\
+  &=& 4.21 \\
+\end{eqnarray*}
+
+購入者Cの商品4に対する評価値は4.21となった．これは利用者Cの評価値の平均の3よりも高い．
+したがって，購入者Cに商品4は推薦すべきである．
+
+
+
+\section{単語の共起関係の評価}
+任意の単語のペア1，2 に対し，どちらの方が関連の強い単語のペアであるかを評価する．
+単語「立命館大学」と関連が強いと考えられる単語を「西園寺」とし．関連が弱いと考えられる単語を「寿司」とする．\\\\
+単語のペア1：立命館大学　西園寺 \\
+単語のペア2：立命館大学　寿司 \\\\
+検索エンジンにGoogleを用いて，各単語と，単語のペアの検索ヒット数を調べた．結果を表1に示す．
+
+\begin{table}[H]
+  \centering
+  \caption{各単語の検索ヒット数}
+  \label{table: Artifact}
+  \begin{tabular}{|l|l|}
+  \hline
+  単語，単語のペア  & 検索ヒット数      \\ \hline
+  立命館大学     & 15,600,000  \\ \hline
+  西園寺       & 9,920,000   \\ \hline
+  寿司        & 428,000,000 \\ \hline
+  立命館大学　西園寺 & 42,200      \\ \hline
+  立命館大学　寿司  & 474,000     \\ \hline
+  \end{tabular}
+  \end{table}
+　\\
+表1に示した検索ヒット数を用い，単語ペア1と2の相互情報量を算出する．ここでは，検索エンジンの総Webページ数を1兆と仮定する．
+
+\begin{eqnarray*}
+  I(立命館大学，西園寺) &=& log\frac{P(立命館大学，西園寺)}{P(立命館大学) P(西園寺)} \\\\
+  &=& \frac{\frac{42,200}{1,000,000,000,000} }{\frac{15,600,000}{1,000,000,000,000} \times  \frac{9,920,000}{1,000,000,000,000} } \\\\
+  &=& 272.694\dots
+\end{eqnarray*}
+
+\begin{eqnarray*}
+  I(立命館大学，寿司) &=& log\frac{P(立命館大学，寿司)}{P(立命館大学) P(寿司)} \\\\
+  &=& \frac{\frac{474,000}{1,000,000,000,000} }{\frac{15,600,000}{1,000,000,000,000} \times  \frac{428,000,000}{1,000,000,000,000} } \\\\
+  &=& 70.992\dots \\
+\end{eqnarray*}
+
+結果は，単語ペア1の相互情報量のほうが高くなった．
+このことから，単語「立命館大学」は，単語「寿司」より，単語「西園寺」のほうが共有する情報量が多いと分かる．
+よって，予想と同じ結果になったと言える．
+
+\section{単純ベイズ分類器による分類}
+（1）spam クラスに単語 banking が存在する条件付き確率
+\begin{eqnarray*}
+  P(banking | spam) = \frac{2}{3} \\
+\end{eqnarray*}
+
+（2）not spam クラスに単語 buy が存在する条件付き確率
+\begin{eqnarray*}
+  P(buy | not spam) = \frac{2}{7} \\
+\end{eqnarray*}
+
+（3）11番目のメールがspamである条件付き確率\\\\
+11 番目のメールが与えられ，以下のように単語ベクトルで表現できるとする. 
+\begin{eqnarray*}
+  mail\_11 = (1, 1, 1, 0, 1)\\
+\end{eqnarray*}
+
+
+文書mail\_11が分類されるクラスcを，
+\begin{math}
+  Class(mail\_11)
+\end{math}
+で表すと，
+\begin{math}
+  Class(mail\_11)
+\end{math}
+は\begin{math}
+  P(c| mail\_11)
+\end{math}
+が最大となるクラスcとなる．分類されるクラスの集合をCとして，これを表現すると，
+\begin{eqnarray*}
+  Class(mail\_11) = arg_{c\epsilon C} maxP(c| mail\_11) = arg_{c\epsilon C} maxP(mail\_11| c) P(c) \\
+\end{eqnarray*}
+
+
+% まず，spamクラスを観測したとき，文書mail\_11である条件付き確率\begin{math}
+%   P(mail\_11| spam)
+% \end{math}を求める．
+
+spamクラスを観測する確率P(spam)は，
+\begin{eqnarray*}
+  P(spam) = \frac{3}{10} \\
+\end{eqnarray*}
+
+spamクラスを観測したとき，文書mail\_11である条件付き確率は以下の式で表現できる．ただし，Wは文書集合中の全ての単語の
+集合を表し，\begin{math}
+  \delta(w,mail\_11)
+\end{math}
+は単語wが文書mail\_11に出現したときに1，それ以外のときに0を返す関数とする．
+\begin{eqnarray*}
+  P(mail\_11| spam) = \prod_{w\epsilon W} P(w| spam)^{\delta(w,mail\_11)} (1-P(w|spam))^{\delta(w,mail\_11)} \\
+\end{eqnarray*}
+
+spamクラスに属する文書が，単語wを含む条件付き確率
+\begin{math}
+  P(w|spam)
+\end{math}
+をそれぞれ求めると，
+\begin{eqnarray*}
+  P(cheap|spam) = 1 \\
+  P(buy|spam) = \frac{1}{2}  \\
+  P(banking|spam) = \frac{3}{4}  \\
+  P(dinner|spam) = \frac{1}{4}  \\
+  P(the|spam) = 1  \\
+\end{eqnarray*}
+
+spamクラスに属する全ての文書が特定の単語wを含むことで，条件付き確率
+\begin{math}
+  P(w|spam)
+\end{math}が1になる場合がある．これにより
+\begin{math}
+  1-P(w|spam) 
+\end{math}
+が0になり，\begin{math}
+  P(mail\_11|spam)
+\end{math}が求められなくなる．この問題を回避するために，分母に2，分子に1を加えるラプラススムージングを適用する．\\\\
+ラプラススムージングを適用した場合の条件付き確率\begin{math}
+  P(w|spam)
+\end{math}
+\begin{eqnarray*}
+  P(cheap|spam) = \frac{4}{5} \\
+  P(buy|spam) = \frac{2}{5}  \\
+  P(banking|spam) = \frac{3}{5}  \\
+  P(dinner|spam) =  \frac{1}{5} \\
+  P(the|spam) = \frac{4}{5} \\
+\end{eqnarray*}
+
+よって，文書mail\_11がspamである条件付き確率\begin{math}
+  P(mail\_11|spam)
+\end{math}は，
+\begin{eqnarray*}
+  P(mail\_11| spam) &=& \frac{4}{5}(1-\frac{4}{5}) \cdot \frac{2}{5}(1-\frac{2}{5})\cdot \frac{3}{5}(1-\frac{3}{5})\cdot \frac{1}{5}^0(1-\frac{1}{5})^0\cdot \frac{4}{5} (1-\frac{4}{5} ) \\\\
+  &=& \frac{576}{5^8} \\\\
+  &=& 0.00147 \dots \\
+\end{eqnarray*}
+
+% 同様に，not spamクラスを観測したとき，文書mail\_11である条件付き確率\begin{math}
+%   P(mail\_11|notspam)
+% \end{math}
+% を求める．\\
+% not spamクラスに属する文書が，単語wを含む条件付き確率
+% \begin{math}
+%   P(w|notspam)
+% \end{math}
+% \begin{eqnarray*}
+%   P(cheap|spam) = \frac{2}{9} \\
+%   P(buy|spam) = \frac{3}{9}  \\
+%   P(banking|spam) = \frac{3}{9}  \\
+%   P(dinner|spam) =  \frac{2}{9} \\
+%   P(the|spam) = \frac{8}{9} \\
+% \end{eqnarray*}
+
+% よって，not spamクラスを観測したとき，文書mail\_11である条件付き確率\begin{math}
+%   P(mail\_11|notspam)
+% \end{math}は，
+% \begin{eqnarray*}
+%   P(mail\_11| spam) &=& \frac{2}{9}(1-\frac{2}{9}) \cdot \frac{3}{9}(1-\frac{3}{9})\cdot \frac{3}{9}(1-\frac{3}{9})\cdot \frac{2}{9}^0(1-\frac{2}{9})^0\cdot \frac{8}{9} (1-\frac{8}{9} ) \\\\
+%   &=& \frac{36288}{9^8} \\\\
+%   &=& 0.00084 \dots \\
+% \end{eqnarray*}
+
+% 以上より，
+% クラスcはspamであるとき\begin{math}
+%   P(c| mail\_11)
+% \end{math}
+% が最大となることから，mail\_11はspamだ！！！！
+
+
+\end{document}

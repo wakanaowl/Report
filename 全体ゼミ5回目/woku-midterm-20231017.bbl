@@ -1,7 +1,7 @@
 \begin{thebibliography}{1}
 
-\bibitem{AVTEST}
-{AV-ATLAS}: AV-ATLAS - Malware & PUA,
+\bibitem{AV-TEST}
+{AV-ATLAS}: {AV-ATLAS - Malware \& PUA},
   \url{https://portal.av-atlas.org/malware/statistics} (2022).
 
 \bibitem{IBM}
@@ -10,13 +10,17 @@
   (2022).
 
 \bibitem{Symbiote}
-{Joakim, K. and The BlackBerry Research \& Intelligence\\ Team }: Symbiote: A
-  New, Nearly-Impossible-to-Detect Linux Threat,
+{Joakim, K. and The BlackBerry Research \& Intelligence\\ Team }: {Symbiote: A
+  New, Nearly-Impossible-to-Detect Linux Threat},
   \url{https://blogs.blackberry.com/en/2022/06/symbiote-a-new-nearly-impossible-to-detect-linux-threat}
   (2022).
 
 \bibitem{MITRE-ATT&CK}
 {MITRE ATT\&CK}: Hijack Execution Flow: Dynamic\\ Linker Hijacking,
   \url{https://attack.mitre.org/techniques/T1574/006/} (2023).
+
+\bibitem{glibc}
+{GNU}: {The GNU C Library (glibc)}, \url{https://www.gnu.org/software/libc/}
+  (2023).
 
 \end{thebibliography}

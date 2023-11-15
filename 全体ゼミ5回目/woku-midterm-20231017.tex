@@ -2,7 +2,8 @@
 \documentclass[submit,techreq,noauthor,dvipdfmx]{mid-eco}
 \usepackage[dvips]{graphicx}
 \usepackage{listings, jlisting} 		% for source code
-\usepackage{url}
+%\usepackage{url}
+\usepackage[hyphens]{url}
 \usepackage{setspace}
 \usepackage{here}
 %\setstretch{1.5} % 行間を広くします（資料チェックしてもらうときはコメントを外す）
@@ -48,8 +49,10 @@
 
 \section{はじめに}
 IoTデバイスの普及や組織のクラウドシフトにより，製品やサービスの基盤として，Linuxマシンを利用するケースが増えた．
-攻撃対象が広がったことで，それを標的とするLinuxマルウェアも劇的に増加している．AV-ATLASのマルウェアの統計データによると，
-TEST}．
+攻撃対象が広がったことで，それを標的とするLinuxマルウェアも劇的に増加している．AV-ATLASのマルウェアの統計データによると，のマルウェアの統計データによると,Linux を標的とした
+新種のマルウェアは 2022 年上半期に 1,687,755 個見つかっ
+ており,2021 年上半期の 226,324 個と比較して,約 650\%
+増加している\cite{AV-TEST}．
 Linuxマルウェアの開発動向としては，マルウェアが自身の攻撃をセキュリティソフトに検知されないようにする回避技術の大幅な向上が確認されている\cite{IBM}．
 2021年に発見されたSymbioteは，極めて検出が困難とされる\cite{Symbiote}．
 Symbioteは，動的リンカによって実行中のプログラムにロードされる共有ライブラリとして動作する．
@@ -73,14 +76,14 @@ Dynamic Linker Hijackingの対策として，動的リンカに関する環境�
 
 \section{Linux動的リンカの調査}
 \subsection{調査方法}
-Linux動的リンカはGNU C Library（glibc）の一部として提供され，ソースコードが公開されている\cite{MITRE-ATT&CK}．
+Linux動的リンカはGNU C Library（glibc）の一部として提供され，ソースコードが公開されている\cite{glibc}．
 しかし，詳細な内部設計を提供するドキュメントは公開されていない．本調査では，主にソースコードとデバッグ情報から動的リンカの仕様を明らかにする．\\
 調査の対象とする動的リンカのバージョンと，デバッグ環境を以下に示す．
 
   \begin{itemize}
    \item ld-linux-x86-64.so.2（glibc version 2.35）
    \item Ubuntu 22.04.2 LTS
-   \item GDB
+   \item GNU gdb (Ubuntu 12.1-0ubuntu1~22.04) 12.1
   \end{itemize}
 
 

@@ -1,0 +1,32 @@
+This is e-pTeX, Version 3.141592653-p4.0.0-220214-2.6 (utf8.euc) (TeX Live 2022) (preloaded format=platex 2022.5.16)  14 NOV 2023 16:33
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**/Users/okuwakana/workspace/report/全体ゼミ6回目/woku-midterm-20231017.tex
+(/Users/okuwakana/workspace/report/全体ゼミ6回目/woku-midterm-20231017.tex
+pLaTeX2e <2021-11-15> (based on LaTeX2e <2021-11-15> patch level 1)
+L3 programming layer <2022-05-04>
+
+! LaTeX Error: File `mid-eco.cls' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: cls)
+
+Enter file name: 
+! Emergency stop.
+<read *> 
+         
+l.3 \usepackage
+               [dvips]{graphicx}^^M
+*** (cannot \read from terminal in nonstop modes)
+
+ 
+Here is how much of TeX's memory you used:
+ 27 strings out of 479993
+ 670 string characters out of 5884089
+ 292485 words of memory out of 5000000
+ 18437 multiletter control sequences out of 15000+600000
+ 473130 words of font info for 45 fonts, out of 8000000 for 9000
+ 107 hyphenation exceptions out of 8191
+ 19i,0n,29p,167b,18s stack positions out of 10000i,1000n,20000p,200000b,200000s
+No pages of output.

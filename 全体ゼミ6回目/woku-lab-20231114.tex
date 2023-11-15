@@ -1,0 +1,107 @@
+\documentclass[submit,techreq,noauthor]{eco}	% semi style
+\usepackage[dvips]{graphicx}
+\usepackage{listings, jlisting} 		% for source code
+\usepackage[hyphens]{url}
+\usepackage{setspace}
+\usepackage{here}
+%\setstretch{1.5} % 行間を広くします（資料チェックしてもらうときはコメントを外す）
+
+\lstset{
+  basicstyle={\ttfamily},
+  identifierstyle={\small},
+  commentstyle={\smallitshape},
+  keywordstyle={\small\bfseries},
+  ndkeywordstyle={\small},
+  stringstyle={\small\ttfamily},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},
+  numbers=left,
+  xrightmargin=0zw,
+  xleftmargin=3zw,
+  numberstyle={\scriptsize},
+  stepnumber=1,
+  numbersep=1zw,
+  lineskip=-0.5ex
+}
+
+\begin{document}
+
+\semino {5/38}					% 年度/回数
+\date   {5/11/14/火}				% 令和/月/日/曜日
+\title  {ELFバイナリ実行時の動的リンカ内の情報の取得と\\重複シンボルの検出の実装}	% タイトル
+\author {奥 若菜}				% 氏名
+
+
+\begin{abstract}
+	Linuxマシンが製品やサービスの基盤として広く利用されるようになっていることで，それを標的とするLinuxマルウェアが劇的に増加している．
+  また，Linuxマルウェアの開発動向として，マルウェアが自身の攻撃をセキュリティソフトに検知されないようにする検知回避技術の大幅な向上が確認されている．
+  2021年に発見されたマルウェアSymbioteは，一般的に見られるLinuxマルウェアと比較して，極めて検出が困難とされる．
+  SymbioteはLD\_PRELOADを使用して，すべての実行中のプロセスにロードされる共有ライブラリとして動作し，
+  正当なプロセスの下で自身や他のマルウェアの痕跡を隠蔽する．
+  このように，動的リンカの機能を利用して，悪意のある共有ライブラリをプロセスにロードさせる攻撃をDynamic Linker Hijackingという．
+  本校では，動的リンカに着目して，マルウェアの検知を困難にするDynamic Linker Hijackingの対策を検討する．
+  今回は，ELFバイナリ実行時に，Dynamic Linker Hijackingの影響が現れる箇所をすべて明らかにし，動的リンカ内から影響に関する情報を取得できることを確認する．
+  さらに，ロードされるオブジェクト間でのシンボルの重複を検出する機能を動的リンカ内に実装する．
+\end{abstract}
+\maketitle
+
+
+\section{はじめに}
+  IoTデバイスの普及や組織のクラウドシフトにより，製品やサービスの基盤として，Linuxマシンを利用するケースが増えた．
+  攻撃対象が広がったことで，それを標的とするLinuxマルウェアも劇的に増加している．
+  AV-ATLASのマルウェアの統計データによると，Linux を標的とした新種のマルウェアは 2022 年上半期に 1,687,755個見つかっており,2021 年上半期の 226,324 個と比較して,約 650\%増加している\cite{AV-TEST}．
+  Linuxマルウェアの動向としては，マルウェアが自身の攻撃をセキュリティソフトに検知されないようにする検知回避技術の大幅な向上が確認されている\cite{IBM}．
+  このようなLinuxマルウェアとして，特にDynamic Linker Hijackingを行うマルウェアが注目されている．
+
+  2021年に発見されたSymbioteは，動的リンカによって，実行中のプロセスにロードされる共有ライブラリとして動作する．
+  攻撃者はLD\_PRELOADという環境変数を利用し，Symbioteを優先してロードさせることで，本来使用されるライブラリ関数を置き換える．
+  Symbioteの検出が困難な理由として，ライブラリ関数の置き換えによって，正常なプロセスの下で任意のコードの実行が可能になることがある．
+  これによって悪意のあるファイルやプロセス，通信の隠蔽や改ざんが行われる．
+  このように，動的リンカの機能を利用して，悪意のある共有ライブラリをプロセスにロードさせる攻撃をDynamic Linker Hijackingという．
+
+  Dynamic Linker Hijackingの対策として，動的リンカに関する環境変数や設定ファイルの変更を監視することが提案されている\cite{MITRE-ATT&CK}．
+  この対策の目的は，攻撃者によって，プロセスにロードする共有ライブラリの設定が行われるのを防ぐことである．
+  しかし，この設定が行われてしまい，プロセスにマルウェアの共有ライブラリがロードされる場合も，プロセスの実行時にロードを防ぐことが期待される．
+
+  本稿では，共有ライブラリのロードを行う動的リンカに着目し，プロセス実行時の動的リンク段階におけるDynamic Linker Hijackingへの対策を検討する．
+  今回は，ELFバイナリ実行時に，Dynamic Linker Hijackingの影響が現れる箇所をすべて明らかにし，動的リンカ内から影響に関する情報を取得できることを確認する．
+  さらに，ロードされるオブジェクト間でのシンボルの重複を検出する機能を動的リンカ内に実装する．
+  % Dynamic Linker Hijackingは，マルウェアの検知を非常に困難にする．
+  %正当なプロセスの下で，マルウェアのコードが実行されるため，プロセスベースの解析は回避される可能性が高い．
+
+  以下，2章でDynamic Linker Hijackingの影響が現れる箇所について述べ，3章で動的リンカ内での影響に関する情報の取得について述べる．
+  4章でオブジェクト間でのシンボル重複の検出について述べ，5章でまとめる．\\
+
+\section{Dynamic Linker Hijackingの影響が現れる箇所}
+  本章では，ELFバイナリ実行時の動的リンク段階おいて，Dynamic Linker Hijackingの影響が現れる箇所をすべて明らかにする．
+  動的リンク段階では，ELFバイナリ自体の実行は始まっておらず，それによる共有ライブラリの呼び出しも行われないため，マルウェアのコードが実行されることはない．
+  そのため，影響が現れる箇所は，次の2つに絞られる．
+  
+  １つ目は，動的リンカにマルウェアの共有ライブラリをロードさせるための環境変数や設定ファイルである．
+  優先的にロードする共有ライブラリを指定できるLD\_PRELOAD環境変数および/etc/ld.so.preloadファイルは，マルウェアの共有ライブラリが指定される可能性がある．
+  また，共有ライブラリを探索するディレクトリを指定できるLD\_LIBRARY\_PATHは，マルウェアを置いたディレクトリが指定される可能性がある．
+  Dynamic Linker Hijackingでは，これらの環境変数またはファイルの変更が必ず必要となる．
+
+  ２つ目は，動的リンカがプロセスにロードする共有ライブラリ．
+  
+
+
+\section{おわりに}
+共有ライブラリ関数の置き換えを行うLinuxマルウェアであるSymbioteの調査を行なった．
+ソースコードの静的解析により，Symbioteのライブラリ関数は，実行されたときの条件によって，処理の内容が変化するものとしないものがあると分かった．
+調査を行なった16種類のライブラリ関数において，変化するものが9種類，変化しないものが6種類であった．
+また，Symbioteがエクスポートする各ライブラリ関数について，Symbiteなしの場合，Symbiteありで条件を満たす場合，Symbioteありで条件を満たさない場合の3通りのstraceの統計を取得した．
+その結果，Symbiote感染時であっても，ライブラリ関数ごとに特定の条件を満たしたときのみ，出力結果やシステムコールに変化が現れる場合があることがわかった．
+条件の内容は，攻撃者がリモートログインしているときや，攻撃者と通信を行っているときに，そのことを隠蔽するものが多かった．
+よって，それらに関するライブラリ関数の置き換えをシステムコールから確認できるのは，攻撃者による通信やアクセスが行われているときのみであると分かる．
+
+%bibtex
+\setlength\baselineskip{12pt}
+{\small
+	\bibliography{references}
+	\bibliographystyle{ipsjunsrt}
+}
+
+
+\end{document}

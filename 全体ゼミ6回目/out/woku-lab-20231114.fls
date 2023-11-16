@@ -250,6 +250,10 @@ INPUT fig/scope2.eps
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmtt9.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/ptex-fonts/jis/jis.tfm
+INPUT ./fig/dup.eps
+INPUT ./fig/dup.eps
+INPUT fig/dup.eps
+INPUT fig/dup.eps
 INPUT out/woku-lab-20231114.bbl
 INPUT out/woku-lab-20231114.bbl
 INPUT out/woku-lab-20231114.bbl

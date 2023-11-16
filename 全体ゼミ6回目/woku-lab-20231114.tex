@@ -193,7 +193,7 @@ Dynamic Linker Hijackingの対策として，プロセスにロードされた�
 
 \subsubsection{シンボル重複の検出手法}
 動的リンカのソースコードに，シンボル重複の検出を行う関数 \_dl\_detect\_duplicate()を追加した．
-図3にソースコードを示し，以下に関数の処理の流れを説明する．
+図\ref{listings:code}にソースコードを示し，以下に関数の処理の流れを説明する．
 
 \begin{enumerate}
   \item 引数として，シンボル重複を探したいオブジェクトのリンクマップdef\_mapと，そのscopeを受け取る．
@@ -207,6 +207,15 @@ Dynamic Linker Hijackingの対策として，プロセスにロードされた�
 \end{enumerate}
 
 \subsubsection{実行結果}
+\_dl\_detect\_duplicate()を動的リンカ内で呼び出すことによって，シンボルの重複が検出できることを確認する．
+LD\_PRELOADにマルウェアの共有オブジェクトのパス/home/woku/Symbiote-20220610/kerneldev.soを設定し，usr/bin/lsを実行したときの出力を確認した．
+出力結果を図4に示す．水色マーカーの部分のオブジェクトと，灰色マーカーの部分のオブジェクトで，fopenのシンボルが重複していることが分かる．
+また，全部で6つのシンボルが検出されており，ロードされたオブジェクトから重複シンボルが全て検出できることを確認した．\\
+
+
+\section{おわりに}
+
+
 
 \begin{figure*}[t]
 	\centering
@@ -273,9 +282,13 @@ Dynamic Linker Hijackingの対策として，プロセスにロードされた�
 	\label{listings:code}
 \end{figure*}
 
+\begin{figure*}[t]
+	\centering
+  \includegraphics[width=13cm]{fig/dup.eps}
+	\caption{シンボル重複の検出結果}
+	\label{fig:duplicate}
+\end{figure*}
 
-\section{おわりに}
-こんにちは
 
 
 %bibtex

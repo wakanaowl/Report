@@ -4,29 +4,55 @@
 \usepackage[hyphens]{url}
 \usepackage{setspace}
 \usepackage{here}
+\usepackage{xcolor}
 %\setstretch{1.5} % 行間を広くします（資料チェックしてもらうときはコメントを外す）
 
+% \lstset{
+%   language={C},
+%   basicstyle={\ttfamily},
+%   identifierstyle={\small},
+%   commentstyle=\color{black},
+%   keywordstyle={\small\bfseries},
+%   ndkeywordstyle={\small},
+%   stringstyle={\small\ttfamily},
+%   frame={tb},
+%   breaklines=true,
+%   columns=[l]{fullflexible},
+%   numbers=left,
+%   xrightmargin=0zw,
+%   xleftmargin=3zw,
+%   numberstyle={\scriptsize},
+%   stepnumber=1,
+%   numbersep=1zw,
+%   lineskip=-0.5ex
+%   breaklines=true,  % 行が長すぎる場合に折り返し
+%   breakatwhitespace=true,  % 単語単位で折り返し
+%   % commentstyle={\small\ttfamily \color[rgb]{0,0.5,0}},
+%   % keywordstyle={\small\bfseries \color[rgb]{1,0,0}},
+%   % stringstyle={\small\ttfamily \color[rgb]{0,0,1}},
+% }
+
+% C言語のソースコードを表示するための設定
 \lstset{
-  language={C},
-  basicstyle={\ttfamily},
-  identifierstyle={\small},
-  commentstyle={\smallitshape},
-  keywordstyle={\small\bfseries},
-  ndkeywordstyle={\small},
-  stringstyle={\small\ttfamily},
-  frame={tb},
-  breaklines=true,
-  columns=[l]{fullflexible},
+  language=C,
+  identifierstyle=\small,
+  ndkeywordstyle=\small,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\small\bfseries\color{blue},
+  commentstyle=\color{green!60!black},
+  stringstyle=\small\color{orange},
   numbers=left,
+  numberstyle=\tiny,
+  stepnumber=1,
+  breaklines=true,  % 行が長すぎる場合に折り返し
+  breakatwhitespace=true,  % 単語単位で折り返し
+  frame=single,
+  % backgroundcolor=\color{gray!10},
+  tabsize=4,
+  lineskip=-0.5ex,
+  escapeinside={<latex>}{</latex>},
   xrightmargin=0zw,
   xleftmargin=3zw,
-  numberstyle={\scriptsize},
-  stepnumber=1,
-  numbersep=1zw,
-  lineskip=-0.5ex
-  % commentstyle={\small\ttfamily \color[rgb]{0,0.5,0}},
-  % keywordstyle={\small\bfseries \color[rgb]{1,0,0}},
-  % stringstyle={\small\ttfamily \color[rgb]{0,0,1}},
 }
 
 \begin{document}
@@ -171,15 +197,67 @@ Dynamic Linker Hijackingの対策として，プロセスにロードされた�
 
 \begin{figure*}[t]
 	\centering
-  \caption{マルウェアありの/usr/bin/sshのscope}
+  \caption{ソースコード：\_dl\_detect\_deplicate}
   \begin{lstlisting}[language=c]
-  int main() {
-    /^{こんにちは}/
-    printf("Hello, World!\n");
-    return 0;
-  }
+    /*重複を検出する関数*/
+    void _dl_detect_duplicate(struct link_map *def_map, struct r_scope_elem *scope)
+    {
+      /*オブジェクトのシンボルテーブル，文字列テーブル*/
+      const ElfW(Sym) *symtab = (const void *)D_PTR(def_map, l_info[DT_SYMTAB]);
+      const char *strtab = (const void *)D_PTR(def_map, l_info[DT_STRTAB]);
+
+      const struct r_found_version *version = NULL;
+      ElfW(Sym) * sym;
+      struct link_map *sym_map;
+
+      /*スコープの一番後ろにプリロードオブジェクトを移動*/
+      struct r_scope_elem *temp_scope = scope;
+      temp_scope->r_list[0] = scope->r_list[0];
+      temp_scope->r_list[scope->r_nlist-1] = def_map;
+      for (int i = 1; i < scope->r_nlist - 1; i++)
+      {
+        temp_scope->r_list[i] = scope->r_list[i + 1];
+      }
+
+      /*シンボルテーブルのインデックス数を計算*/
+      const size_t idx = ((strtab - (char *) symtab) / def_map->l_info[DT_SYMENT]->d_un.d_val);
+      for (size_t i = 0; i < idx; i++)
+      {
+        sym = &symtab[i];
+
+        /*定義がUNDEFでないかつ, グローバルスコープ*/
+        if (sym->st_shndx != SHN_UNDEF && ELFW(ST_BIND)(sym->st_info) == STB_GLOBAL)
+        {
+          /*.strtabからシンボル名を取得する*/
+          char *def_name = (const char *)D_PTR(def_map, l_info[DT_STRTAB]) + (*sym).st_name;
+
+          if (def_name != NULL)
+          {
+            const struct r_found_version *v = NULL;
+            /*現在type_classを0で決め打ち*/
+            int _tc = 0;
+
+            def_map->l_lookup_cache.sym = sym;
+
+            if ((version) != NULL && (version)->hash != 0)
+              v = (version);
+
+            /*シンボルが定義されているオブジェクトのリンクマップを探す*/
+            sym_map = _dl_lookup_symbol_x(def_name, def_map, &sym, &temp_scope, v, _tc, DL_LOOKUP_ADD_DEPENDENCY | DL_LOOKUP_FOR_RELOCATE, 0);
+
+            /*シンボルの重複が見つかった場合，出力する*/
+            if (sym_map != def_map)
+            {
+              _dl_debug_printf("duplicated  %s [%lu] to %s [%lu]: symbol `%s'\n",
+                              DSO_FILENAME(def_map->l_name), def_map->l_ns,
+                              DSO_FILENAME(sym_map->l_name), sym_map->l_ns,def_name);
+            }
+          }
+        }
+      }
+    }
   \end{lstlisting}
-	\label{listings:aaa}
+	\label{listings:code}
 \end{figure*}
 
 

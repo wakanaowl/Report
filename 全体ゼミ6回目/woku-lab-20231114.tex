@@ -23,6 +23,9 @@
   stepnumber=1,
   numbersep=1zw,
   lineskip=-0.5ex
+  % commentstyle={\small\ttfamily \color[rgb]{0,0.5,0}},
+  % keywordstyle={\small\bfseries \color[rgb]{1,0,0}},
+  % stringstyle={\small\ttfamily \color[rgb]{0,0,1}},
 }
 
 \begin{document}
@@ -118,23 +121,70 @@ scopeはオブジェクトのリンクマップを格納する配列であり，
 
 \subsubsection{scopeの取得結果}
 
+\begin{figure*}[t]
+	\centering
+  \includegraphics[width=13cm]{fig/scope1.eps}
+	\caption{デフォルトの/usr/bin/sshのscope}
+	\label{fig:scope}
+\end{figure*}
 
+\begin{figure*}[t]
+	\centering
+  \includegraphics[width=13cm]{fig/scope2.eps}
+	\caption{マルウェアありの/usr/bin/sshのscope}
+	\label{fig:scope-malware}
+\end{figure*}
+
+Dynamic Linker Hijackingによって，オブジェクトのロード順またはロードパスが変化することを，実際のELFバイナリを実行したときのscopeを取得することで確認した．
+scopeの値は，動的リンカのデバッグを行う環境変数LD\_DEBUGにscopesを設定することで，実行時に動的リンカに出力させる．
+実行するELFバイナリは/usr/bin/sshを用い，ssh localhostを実行したときの/usr/bin/sshのscopeを取得する．
+条件として，LD\_PRELOADが値を持たないとき(マルウェアなし)と，Dynamic Linker Hijackingを想定して，
+LD\_PRELOADにマルウェアの共有オブジェクトのパス/home/woku/Symbiote-20220610/kerneldev.soを設定したとき(マルウェアあり)で行う．
+
+マルウェアなしとマルウェアありの結果を，それぞれ図\ref{fig:scope}と図\ref{fig:scope-malware}に示す．
+両方の図にある水色マーカー部分は，どのオブジェクトのscopeであるかを表しており，/usr/bin/sshのscopeであることが分かる．
+「scope 0:」の文字列以降は，scopeの中身であり，オブジェクトのパスが空白区切りで示されている．
+図\ref{fig:scope}と図\ref{fig:scope-malware}のscopeを比較すると，図\ref{fig:scope-malware}の黄色マーカー部分のオブジェクトが，図\ref{fig:scope}には存在しないことが分かる．
+追加されたオブジェクトは，LD\_PRELOADによって設定されたマルウェアのオブジェクトと，そのオブジェクトが依存する共有オブジェクトである．
+この結果から，動的リンク時のscopeを取得することで，オブジェクトのロードパス，ロード順が分かり，
+Dynamic Linker Hijackingが行われるときは，それらの変化が確認できることを示した．\\
+
+\section{シンボル重複の検出}
+\subsection{Dynamic Linker Hijackingにおけるシンボル重複}
+動的リンカが行うシンボル解決では，ロードされたオブジェクト間にシンボルの重複あった場合，先にロードされたオブジェクトのシンボルが解決に使用される．
+通常のシステムでは，特別な理由がない限り，重複シンボルは意図しない動作の原因となる可能性があるため，なくすべきとされる．
+一方で，Dynamic Linker Hijackingでは，正規のライブラリと同名のライブラリを持つオブジェクトを優先的にロードさせ，シンボル重複を起こすことで，ライブラリの置き換えを行う．
+よって，プロセスにロードされたオブジェクト間にシンボルの重複が存在する場合，Dynamic Linker Hijackingの可能性を疑うべきである．
+
+\subsection{シンボル重複の検出機能の実装}
+Dynamic Linker Hijackingの対策として，プロセスにロードされたオブジェクト間のシンボル重複を検出したい．
+しかし，動的リンカの通常のシンボル解決では，目的のシンボルを発見した時点でシンボルの探索を終了するため，重複シンボルを検出できない．
+そこで，動的リンカ内にシンボルの重複を検出するための機能を実装する．
+
+重複シンボルの検出はなるべく早い段階でおこないたい．
+よって，プロセスにオブジェクトが全てロードされた後，実際のシンボル解決処理の前に，シンボル重複の検出処理を追加する．\\
+
+\subsubsection{シンボル重複の検出手法}
+動的リンカのソースコードに，シンボル重複の検出を行う関数 \_dl\_detect\_duplicate()を追加した．
+以下に，関数の処理内容を説明する．\\
+
+\begin{figure*}[t]
+	\centering
+  \caption{C++サンプルコード}
+  \begin{lstlisting}[language=c++]
+    #include <iostream>
+      int main(){
+          std::cout << "Hello, world!" << std::endl;
+          return 0;
+      }
+  \end{lstlisting}
+	\label{fig:c}
+\end{figure*}
 
 \section{おわりに}
-共有ライブラリ関数の置き換えを行うLinuxマルウェアであるSymbioteの調査を行なった．
-ソースコードの静的解析により，Symbioteのライブラリ関数は，実行されたときの条件によって，処理の内容が変化するものとしないものがあると分かった．
-調査を行なった16種類のライブラリ関数において，変化するものが9種類，変化しないものが6種類であった．
-また，Symbioteがエクスポートする各ライブラリ関数について，Symbiteなしの場合，Symbiteありで条件を満たす場合，Symbioteありで条件を満たさない場合の3通りのstraceの統計を取得した．
-その結果，Symbiote感染時であっても，ライブラリ関数ごとに特定の条件を満たしたときのみ，出力結果やシステムコールに変化が現れる場合があることがわかった．
-条件の内容は，攻撃者がリモートログインしているときや，攻撃者と通信を行っているときに，そのことを隠蔽するものが多かった．
-よって，それらに関するライブラリ関数の置き換えをシステムコールから確認できるのは，攻撃者による通信やアクセスが行われているときのみであると分かる．
 
-%bibtex
-\setlength\baselineskip{12pt}
-{\small
-	\bibliography{references}
-	\bibliographystyle{ipsjunsrt}
-}
+
+
 
 
 \end{document}

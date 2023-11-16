@@ -7,6 +7,7 @@
 %\setstretch{1.5} % 行間を広くします（資料チェックしてもらうときはコメントを外す）
 
 \lstset{
+  language={C},
   basicstyle={\ttfamily},
   identifierstyle={\small},
   commentstyle={\smallitshape},
@@ -124,7 +125,7 @@ scopeはオブジェクトのリンクマップを格納する配列であり，
 \begin{figure*}[t]
 	\centering
   \includegraphics[width=13cm]{fig/scope1.eps}
-	\caption{デフォルトの/usr/bin/sshのscope}
+	\caption{マルウェアなしの/usr/bin/sshのscope}
 	\label{fig:scope}
 \end{figure*}
 
@@ -166,25 +167,31 @@ Dynamic Linker Hijackingの対策として，プロセスにロードされた�
 
 \subsubsection{シンボル重複の検出手法}
 動的リンカのソースコードに，シンボル重複の検出を行う関数 \_dl\_detect\_duplicate()を追加した．
-以下に，関数の処理内容を説明する．\\
+図3にソースコードを示し，以下に関数の処理内容を説明する．\\
 
 \begin{figure*}[t]
 	\centering
-  \caption{C++サンプルコード}
-  \begin{lstlisting}[language=c++]
-    #include <iostream>
-      int main(){
-          std::cout << "Hello, world!" << std::endl;
-          return 0;
-      }
+  \caption{マルウェアありの/usr/bin/sshのscope}
+  \begin{lstlisting}[language=c]
+  int main() {
+    /^{こんにちは}/
+    printf("Hello, World!\n");
+    return 0;
+  }
   \end{lstlisting}
-	\label{fig:c}
+	\label{listings:aaa}
 \end{figure*}
 
+
 \section{おわりに}
+こんにちは
 
 
-
-
+%bibtex
+\setlength\baselineskip{12pt}
+{\small
+	\bibliography{references}
+	\bibliographystyle{ipsjunsrt}
+}
 
 \end{document}

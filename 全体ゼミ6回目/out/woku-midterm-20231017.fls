@@ -1,8 +1,0 @@
-PWD /Users/okuwakana/workspace/report/å…¨ä½“ã‚¼ãƒŸ6å›žç›®
-INPUT /usr/local/texlive/2022basic/texmf.cnf
-INPUT /usr/local/texlive/2022basic/texmf-dist/web2c/texmf.cnf
-INPUT /usr/local/texlive/2022basic/texmf.cnf
-INPUT /usr/local/texlive/2022basic/texmf-dist/web2c/texmf.cnf
-INPUT /usr/local/texlive/2022basic/texmf-var/web2c/eptex/platex.fmt
-INPUT /Users/okuwakana/workspace/report/Á´ÂÎ¥¼¥ß6²óÌÜ/woku-midterm-20231017.tex
-OUTPUT out/woku-midterm-20231017.log

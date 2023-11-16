@@ -23,8 +23,8 @@
   "latex-workshop.latex.autoClean.run": "onBuilt",
 
   
-  // 生成ファイルを削除するときに対象とするファイル
-  // デフォルト値に "*.synctex.gz" を追加
+  // // 生成ファイルを削除するときに対象とするファイル
+  // // デフォルト値に "*.synctex.gz" を追加
   "latex-workshop.latex.clean.fileTypes": [
     "*.aux",
     "*.bbl",
@@ -43,7 +43,6 @@
     "*.gls",
     "*.ist",
     "*.fls",
-    "*.log",
     "*.fdb_latexmk",
     "*.snm",
     "*.nav",
@@ -51,7 +50,7 @@
     "*.synctex.gz"
   ],
   // 生成ファイルを "" ディレクトリに吐き出す
-  "latex-workshop.latex.outDir": "",
+  "latex-workshop.latex.outDir": "out",
   // ビルドのレシピ
   "latex-workshop.latex.recipes": [
     {
@@ -67,7 +66,6 @@
       "name": "latexmk",
       "command": "latexmk",
       "args": [
-        "-silent",
         "-outdir=%OUTDIR%",
         "%DOC%"
       ],

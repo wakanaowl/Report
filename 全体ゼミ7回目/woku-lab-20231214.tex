@@ -133,7 +133,14 @@ Linuxの動的リンカの調査の結果，プロセスに任意の共有オブ
 
 \section{検出手法の概要}
 本章では，Dynamic Linker Hijackingの検出手法の概要について述べる．
-図\ref{fig:duplicate}
+
+\begin{figure*}[t]
+	\centering
+  \includegraphics[width=13cm]{fig/method3.png}
+	\caption{マルウェアなしの/usr/bin/sshのscope}
+	\label{fig:method}
+\end{figure*}
+
 
 
 \subsection{オブジェクトのロード順・ロードパスの取得}
